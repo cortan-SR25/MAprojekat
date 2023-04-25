@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "454814243413",
+    "project_id": "slagalica-application",
+    "storage_bucket": "slagalica-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454814243413:android:7eb1d0a2ee63c714fb12dc",
+        "android_client_info": {
+          "package_name": "com.example.slagalica_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454814243413-p495mp48djf0r60bqa7l64v12h4lad9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB06EECCqNbV8QNVcVqPS-_0RYi-5ov-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454814243413-p495mp48djf0r60bqa7l64v12h4lad9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
