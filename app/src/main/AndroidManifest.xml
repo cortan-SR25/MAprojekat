@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SlagalicaApplication">
         <activity
+            android:name=".GameFourActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameOneActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -24,7 +27,7 @@
         <activity
             android:name=".SignupActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +37,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

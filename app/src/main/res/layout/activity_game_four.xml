@@ -139,12 +139,22 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/assignment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:background="@color/lavender"/>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".25"
-        android:gravity="bottom"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
         <LinearLayout
             android:id="@+id/columnA"
             android:layout_width="0dp"
@@ -155,36 +165,36 @@
             <TextView
                 android:id="@+id/a1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="A1"
+                android:gravity="center"
+                android:text="ITENZITET SVETLOSTI"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
+                android:background="@drawable/player_two_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
             <TextView
                 android:id="@+id/a2"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
                 android:textAlignment="center"
-                android:text="VOĆE"
+                android:gravity="center"
+                android:text="UGAO"
                 android:textSize="18sp"
-                android:background="@drawable/lavender_border"
+                android:background="@drawable/player_one_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
             <TextView
                 android:id="@+id/a3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="ORASI"
+                android:gravity="center"
+                android:text="PRITISAK"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -194,23 +204,23 @@
             <TextView
                 android:id="@+id/a4"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="A4"
+                android:gravity="center"
+                android:text="SNAGA"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
+                android:background="@drawable/player_two_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/black" />
-            <EditText
-                android:id="@+id/aResult"
+                android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/a5"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="\?"
+                android:gravity="center"
+                android:text="MAGNETNI FLUKS"
                 android:textSize="18sp"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
@@ -227,23 +237,23 @@
             <TextView
                 android:id="@+id/b1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="KARTA"
+                android:gravity="center"
+                android:text="KANDELA"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/player_two_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textColor="@color/white" />
             <TextView
                 android:id="@+id/b2"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="STANICA"
+                android:gravity="center"
+                android:text="RADIJAN"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/player_one_border"
@@ -253,209 +263,41 @@
             <TextView
                 android:id="@+id/b3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="GRADSKI"
+                android:gravity="center"
+                android:text="PASKAL"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <TextView
                 android:id="@+id/b4"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="LASTA"
+                android:gravity="center"
+                android:text="VAT"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/player_two_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textColor="@color/white" />
-            <EditText
+            <TextView
                 android:id="@+id/bResult"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
+                android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="AUTOBUS"
-                android:textSize="18sp"
-                android:background="@drawable/player_one_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/finalResult"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:text="\?"
-        android:textAlignment="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/lavender_border"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
-        android:textColor="@color/black" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".25"
-        android:orientation="horizontal"
-        android:gravity="top">
-        <LinearLayout
-            android:id="@+id/columnC"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-            <EditText
-                android:id="@+id/cResult"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="\?"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/c4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="KROV"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/c3"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="PRAG"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/c2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="PAS"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/c1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="C1"
+                android:text="VEBER"
+                android:gravity="center"
                 android:textSize="18sp"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textColor="@color/black" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/columnD"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-            <EditText
-                android:id="@+id/dResult"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="KREVET"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/d4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="FRANCUSKA"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/d3"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="DUŠEK"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/d2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="VODA"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/d1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"
-                android:textAlignment="center"
-                android:text="VOJSKA"
-                android:textSize="18sp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
         </LinearLayout>
 
     </LinearLayout>
