@@ -15,6 +15,7 @@ public class HomeFragment extends Fragment {
 
     View inflatedView;
     CardView gameOneCard;
+    CardView gameSixCard;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,6 +26,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), GameOneActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        gameSixCard = inflatedView.findViewById(R.id.gameSix);
+        gameSixCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GameSixActivity.class);
                 startActivity(intent);
             }
         });
