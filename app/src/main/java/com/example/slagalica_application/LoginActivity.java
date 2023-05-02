@@ -33,13 +33,13 @@ public class LoginActivity extends AppCompatActivity {
 
         loginUsername = findViewById(R.id.login_username);
         loginPassword = findViewById(R.id.login_password);
-        loginButton = findViewById(R.id.login_button);
         signupRedirectText = findViewById(R.id.signupRedirectText);
+        loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!validateUsername() | !validatePassword()) {
+                if (!validateUsername() | !validatePassword()){
 
                 } else {
                     checkUser();
@@ -54,12 +54,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
-    public Boolean validateUsername() {
+    public Boolean validateUsername(){
         String val = loginUsername.getText().toString();
-        if (val.isEmpty()) {
+        if (val.isEmpty()){
             loginUsername.setError("Username cannot be empty");
             return false;
         } else {
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public Boolean validatePassword(){
         String val = loginPassword.getText().toString();
-        if (val.isEmpty()) {
+        if (val.isEmpty()){
             loginPassword.setError("Password cannot be empty");
             return false;
         } else {
@@ -78,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
     }
-
 
     public void checkUser(){
         String userUsername = loginUsername.getText().toString().trim();
@@ -92,18 +90,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 if (snapshot.exists()){
-
                     loginUsername.setError(null);
                     String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
 
-                    if (passwordFromDB.equals(userPassword)) {
+                    if (passwordFromDB.equals(userPassword)){
                         loginUsername.setError(null);
+
+                        //Pass the data using intent
 
                         String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
                         String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
                         String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);     //zameniti sa ProfileActivity, radice Read from DB
 
                         intent.putExtra("name", nameFromDB);
                         intent.putExtra("email", emailFromDB);

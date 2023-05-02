@@ -42,7 +42,7 @@ public class HelperClass {
         this.username = username;
         this.password = password;
     }
-
     public HelperClass() {
     }
+
 }
