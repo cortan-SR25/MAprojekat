@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:screenOrientation="portrait"
     android:orientation="vertical"
-    tools:context=".GameFourActivity">
+    tools:context=".GameFiveActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -140,14 +140,29 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/assignment"
+        android:id="@+id/questionCount"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="8dp"
         android:textAlignment="center"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="15dp"
+        android:textStyle="italic"
+        android:text="1/5"
+        android:background="@drawable/lavender_border"
+        />
+
+    <TextView
+        android:id="@+id/assignment"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:text="U koje se more uliva reka Jordan?"
         android:background="@color/lavender"/>
 
     <LinearLayout
@@ -168,33 +183,35 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="ITENZITET SVETLOSTI"
+                android:text="MRTVO MORE"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/player_one_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
+
             <TextView
                 android:id="@+id/a2"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="UGAO"
-                android:textSize="18sp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/player_two_border"
                 android:drawablePadding="8dp"
+                android:gravity="center"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:text="CRNO MORE"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/a3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="PRITISAK"
+                android:text="JADRANSKO MORE"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -207,97 +224,14 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="SNAGA"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/a5"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="MAGNETNI FLUKS"
-                android:textSize="18sp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/columnB"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/b1"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="KANDELA"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/b2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="RADIJAN"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/b3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="PASKAL"
+                android:text="CRVENO MORE"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textColor="@color/black" />
-            <TextView
-                android:id="@+id/b4"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="VAT"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/white" />
-            <TextView
-                android:id="@+id/bResult"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:textAlignment="center"
-                android:text="VEBER"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:background="@drawable/lavender_border"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:textColor="@color/black" />
+
         </LinearLayout>
 
     </LinearLayout>
