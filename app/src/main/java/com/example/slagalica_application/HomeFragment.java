@@ -16,6 +16,7 @@ public class HomeFragment extends Fragment {
     View inflatedView;
     CardView gameOneCard;
     CardView gameTwoCard;
+    CardView gameThreeCard;
     CardView gameFourCard;
     CardView gameFiveCard;
     CardView gameSixCard;
@@ -39,6 +40,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), GameTwoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        gameThreeCard = inflatedView.findViewById(R.id.gameThree);
+        gameThreeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GameThreeActivity.class);
                 startActivity(intent);
             }
         });
