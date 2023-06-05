@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameThreeActivity extends AppCompatActivity {
 
@@ -127,6 +128,7 @@ public class GameThreeActivity extends AppCompatActivity {
                 for (int i = 0; i < symbols.size(); i++) {
                     symbols.get(i).setEnabled(true);
                 }
+                setSymbolListeners();
 
                 String letter = "a";
 
@@ -156,6 +158,8 @@ public class GameThreeActivity extends AppCompatActivity {
                 textView2.setText("");
                 textView3.setText("");
                 textView4.setText("");
+
+                numberOfClicks = 0;
             }
         });
 
@@ -169,7 +173,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
                     numberOfTries = numberOfTries - 1;
 
-                    if (isCorrect || numberOfTries == 1) {
+                    if (isCorrect || numberOfTries == 0) {
                         showCorrectCombination();
                         for (int i = 0; i < symbols.size(); i++) {
                             symbols.get(i).setEnabled(false);
@@ -177,8 +181,12 @@ public class GameThreeActivity extends AppCompatActivity {
                         deleteButton.setEnabled(false);
                         okButton.setEnabled(false);
                     }
-
+                    for (int i = 0; i < symbols.size(); i++) {
+                        symbols.get(i).setEnabled(true);
+                    }
+                    setSymbolListeners();
                     changeLetter();
+                    numberOfClicks = 0;
                 }
             }
         });
@@ -308,21 +316,37 @@ public class GameThreeActivity extends AppCompatActivity {
         ArrayList<String> colors = new ArrayList<>();
         ArrayList<String> purples = new ArrayList<>();
         ArrayList<String> darkPurples = new ArrayList<>();
+        ArrayList<String> wrongPlaced = new ArrayList<>();
         int counter = 0;
 
         Resources res = getResources();
+        HashMap<Integer, String> comboToCheck = new HashMap<>();
+        comboToCheck.putAll(correctCombo);
 
         for (int i = 1; i < 5; i++){
             int id = res.getIdentifier(currentLetter + i, "id", getPackageName());
             TextView textView = findViewById(id);
             String val = textView.getText().toString();
 
-            if (correctCombo.containsValue(val)) {
-                if (correctCombo.get(i).equals(val)) {
-                    darkPurples.add("dark purple");
-                    counter = counter + 1;
-                } else {
-                    purples.add("purple");
+            if (comboToCheck.get(i).equals(val)) {
+                darkPurples.add("dark purple");
+                counter = counter + 1;
+                comboToCheck.remove(i);
+            } else if (comboToCheck.containsValue(val)) {
+                wrongPlaced.add(val);
+            }
+        }
+
+        for (int i = 0; i < wrongPlaced.size(); i++){
+
+            if (comboToCheck.containsValue(wrongPlaced.get(i))) {
+                purples.add("purple");
+            }
+
+            for(Map.Entry<Integer, String> entry: comboToCheck.entrySet()) {
+                if(entry.getValue() == wrongPlaced.get(i)) {
+                    comboToCheck.remove(entry.getKey());
+                    break;
                 }
             }
         }
@@ -337,7 +361,7 @@ public class GameThreeActivity extends AppCompatActivity {
             TextView textView = findViewById(id);
             circleCounter = circleCounter + 1;
 
-            if (colors.get(i) == "darkPurple"){
+            if (colors.get(i).equals("dark purple")){
                 textView.setBackground(getDrawable(R.drawable.correct_circle));
             } else {
                 textView.setBackground(getDrawable(R.drawable.partially_correct_circle));
@@ -347,7 +371,6 @@ public class GameThreeActivity extends AppCompatActivity {
         if (counter == 4){
             isCorrect = true;
         }
-
     }
 
     private void changeLetter(){
