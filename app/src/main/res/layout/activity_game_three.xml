@@ -56,6 +56,7 @@
                         app:layout_constraintVertical_bias="0.17" />
 
                     <TextView
+                        android:id="@+id/playerOne_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="60 points"
@@ -135,7 +136,8 @@
             android:layout_marginBottom="15dp"
             android:text="timer"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
     </RelativeLayout>
     <LinearLayout

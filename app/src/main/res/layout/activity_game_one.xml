@@ -62,7 +62,7 @@
                         android:id="@+id/playerOne_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="60 points"
+                        android:text="0 points"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -117,7 +117,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="80 points"
+                        android:text="0 points"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"

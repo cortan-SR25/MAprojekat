@@ -1,12 +1,18 @@
 package com.example.slagalica_application;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,17 +42,27 @@ public class GameThreeActivity extends AppCompatActivity {
     private Button okButton;
     private Button deleteButton;
 
+    private TextView timerText;
+    private TextView player1Points;
+
     private ArrayList<TextView> rows = new ArrayList<>();
     private ArrayList<TextView> symbols;
 
     private boolean isCorrect = false;
 
+    private CountDownTimer countDownTimer;
+
     HashMap<Integer, String> correctCombo = new HashMap<>();
+
+    private boolean isTimerRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_three);
+
+        timerText = findViewById(R.id.timer);
+        player1Points = findViewById(R.id.playerOne_points);
 
         correctCombo.put(1, heart);
         correctCombo.put(2, heart);
@@ -72,52 +88,10 @@ public class GameThreeActivity extends AppCompatActivity {
         symbols.add(triangleButton);
         symbols.add(starButton);
 
-        String letter = "a";
-
-        /*for (int i = 1; i < 10; i++){
-            if (i == 9){
-                if (letter == "h"){
-                    break;
-                }
-
-                if (letter == "g"){
-                    letter = "h";
-                    i = 1;
-                    continue;
-                } else if (letter == "f"){
-                    letter = "g";
-                    i = 1;
-                    continue;
-                } else if (letter == "e"){
-                    letter = "f";
-                    i = 1;
-                    continue;
-                } else if (letter == "d"){
-                    letter = "e";
-                    i = 1;
-                    continue;
-                } else if (letter == "c"){
-                    letter = "d";
-                    i = 1;
-                    continue;
-                } else if (letter == "b"){
-                    letter = "c";
-                    i = 1;
-                    continue;
-                } else if (letter == "a"){
-                    letter = "b";
-                    i = 1;
-                    continue;
-                }
-            }
-            Resources res = getResources();
-            int id = res.getIdentifier(letter + String.valueOf(i), "id", getPackageName());
-            TextView textView = findViewById(id);
-
-        }*/
-
         setListeners();
         setSymbolListeners();
+
+        startTimer(30000);
     }
 
     private void setListeners(){
@@ -128,7 +102,6 @@ public class GameThreeActivity extends AppCompatActivity {
                 for (int i = 0; i < symbols.size(); i++) {
                     symbols.get(i).setEnabled(true);
                 }
-                setSymbolListeners();
 
                 String letter = "a";
 
@@ -180,11 +153,10 @@ public class GameThreeActivity extends AppCompatActivity {
                         }
                         deleteButton.setEnabled(false);
                         okButton.setEnabled(false);
+                        countDownTimer.cancel();
+                        restartTimer();
+                        finishGame();
                     }
-                    for (int i = 0; i < symbols.size(); i++) {
-                        symbols.get(i).setEnabled(true);
-                    }
-                    setSymbolListeners();
                     changeLetter();
                     numberOfClicks = 0;
                 }
@@ -385,5 +357,94 @@ public class GameThreeActivity extends AppCompatActivity {
         } else if (numberOfTries == 1){
             currentLetter = "f";
         }
+    }
+
+    private void startTimer(long time) {
+        countDownTimer = new CountDownTimer(time, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+                showTimerEndDialog();
+                restartTimer();
+                finishGame();
+            }
+        };
+
+        countDownTimer.start();
+        isTimerRunning = true;
+    }
+    private void restartTimer(){
+        countDownTimer.cancel();
+
+        countDownTimer = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+            }
+        };
+
+        countDownTimer.start();
+    }
+
+    private void updateTimerText(long millisUntilFinished) {
+        int seconds = (int) (millisUntilFinished / 1000);
+
+        String time = String.format("%02d", seconds);
+        timerText.setText(time);
+    }
+
+    private void showTimerEndDialog(){
+        ConstraintLayout timerEndConstraintLayout = findViewById(R.id.timerEndConstraintLayout);
+        View view = LayoutInflater.from(GameThreeActivity.this).inflate(R.layout.timer_end_dialog, timerEndConstraintLayout);
+        Button alertDone = view.findViewById(R.id.alertDone);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameThreeActivity.this);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        alertDone.findViewById(R.id.alertDone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if (alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
+    }
+
+    private void finishGame(){
+        if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true){
+            Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("20 points");
+        } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true){
+            Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("15 points");
+        } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true){
+            Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("10 points");
+        } else {
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("0 points");
+        }
+
+        for (int i = 0; i < symbols.size(); i++) {
+            symbols.get(i).setEnabled(true);
+        }
+
+        showCorrectCombination();
     }
 }

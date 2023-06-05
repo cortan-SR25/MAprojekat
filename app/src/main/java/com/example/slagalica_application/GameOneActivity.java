@@ -229,11 +229,11 @@ public class GameOneActivity extends AppCompatActivity {
         double resultNum = Double.parseDouble(result.getText().toString());
 
         if (resultNum == player1ResultNum){
-            Toast.makeText(this, "20 POINTS", Toast.LENGTH_LONG);
-            player1Points.setText("20");
+            Toast.makeText(this, "20 POINTS", Toast.LENGTH_LONG).show();
+            player1Points.setText("20 points");
         } else {
-            Toast.makeText(this, "0 POINTS", Toast.LENGTH_LONG);
-            player1Points.setText("0");
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_LONG).show();
+            player1Points.setText("0 points");
         }
 
         restartTimer();
