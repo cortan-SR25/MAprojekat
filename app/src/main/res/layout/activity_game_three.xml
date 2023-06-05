@@ -161,7 +161,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="💜"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -170,7 +169,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🐹"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -179,7 +177,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="💜"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -188,7 +185,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="💜"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -196,7 +192,7 @@
                     android:id="@+id/a5"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/a6"
                     android:layout_height="20dp"
@@ -226,7 +222,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -235,7 +230,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🐹"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -244,7 +238,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -253,7 +246,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -261,17 +253,17 @@
                     android:id="@+id/b5"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/b6"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/b7"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/b8"
                     android:layout_height="20dp"
@@ -291,7 +283,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🟣"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -300,7 +291,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🐹"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -309,7 +299,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -318,7 +307,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -326,22 +314,22 @@
                     android:id="@+id/c5"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/c6"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/c7"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/partially_correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/c8"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/partially_correct_circle"/>
+                    android:background="@drawable/button_border"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/row4"
@@ -356,7 +344,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -365,7 +352,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🐹"
                     android:textSize="30dp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -374,7 +360,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="🟣"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -383,7 +368,6 @@
                     android:layout_height="50dp"
                     android:layout_width="0dp"
                     android:layout_weight="0.14"
-                    android:text="📐"
                     android:textSize="30sp"
                     android:textAlignment="center"
                     android:background="@drawable/button_border"/>
@@ -391,22 +375,22 @@
                     android:id="@+id/d5"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/d6"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/d7"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
                 <TextView
                     android:id="@+id/d8"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
-                    android:background="@drawable/correct_circle"/>
+                    android:background="@drawable/button_border"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/row5"
