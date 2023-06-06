@@ -4,9 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +52,7 @@ public class GameTwoActivity extends AppCompatActivity {
         hint7 = findViewById(R.id.hint7);
 
         timerText = findViewById(R.id.timer);
-
+        player1Points = findViewById(R.id.playerOne_points);
         playerAnswer = findViewById(R.id.playerAnswer);
 
         btnConfirm = findViewById(R.id.btnConfirm);
@@ -226,6 +228,7 @@ public class GameTwoActivity extends AppCompatActivity {
                 timerText.setText("00");
                 isTimerRunning = false;
                 showTimerEndDialog();
+                nextGame();
             }
         };
 
@@ -251,8 +254,12 @@ public class GameTwoActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (playerAnswer.getText().toString().trim().equals(phrases.toString())){
+                if (playerAnswer.getText().toString().trim().equals("Osiguranje")){
                     Toast.makeText(GameTwoActivity.this, "CORRECT ANSWER", Toast.LENGTH_SHORT).show();
+                    player1Points.setText("20 points");
+                    isTimerRunning = false;
+                    countDownTimer.cancel();
+                    nextGame();
                 } else{
                     Toast.makeText(GameTwoActivity.this, "WRONG ANSWER", Toast.LENGTH_SHORT).show();
                 }
@@ -281,4 +288,19 @@ public class GameTwoActivity extends AppCompatActivity {
         }
         alertDialog.show();
     }
+
+    //otvara sledecu igru
+    private void nextGame(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameTwoActivity.this, GameThreeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 5000);
+    }
+
+
 }
