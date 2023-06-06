@@ -442,7 +442,7 @@ public class GameThreeActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < symbols.size(); i++) {
-            symbols.get(i).setEnabled(true);
+            symbols.get(i).setEnabled(false);
         }
 
         showCorrectCombination();
