@@ -210,12 +210,12 @@
             android:id="@+id/calculation"
             android:layout_width="300dp"
             android:layout_height="44dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
             android:background="@drawable/lavender_border"
             android:drawablePadding="8dp"
             android:padding="8dp"
-            android:textColor="@color/black" />
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/delete_button"

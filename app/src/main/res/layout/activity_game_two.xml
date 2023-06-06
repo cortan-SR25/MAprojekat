@@ -56,6 +56,7 @@
                         app:layout_constraintVertical_bias="0.17" />
 
                     <TextView
+                        android:id="@+id/playerOne_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="60 points"
@@ -154,12 +155,11 @@
             android:layout_margin="8dp"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/p1"
+                android:id="@+id/hint1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="IMA VEZE SA SAVOM I DUNAVOM"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -167,9 +167,9 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
 
-
             <TextView
-                android:id="@+id/p2"
+                android:id="@+id/hint2"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
@@ -177,18 +177,17 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="SVIH DEVET SLOVA OVE REČI JE RAZLIČITO"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/p3"
+                android:id="@+id/hint3"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="IMA VEZE SA ZDRAVLJEM"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -197,7 +196,8 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/p4"
+                android:id="@+id/hint4"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
@@ -205,17 +205,16 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="MOŽE SE ODNOSITI NA ŽIVOT"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
             <TextView
-                android:id="@+id/p5"
+                android:id="@+id/hint5"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="IMA SVOG AGENTA I SVOJU PREMIJU"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -223,12 +222,12 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
             <TextView
-                android:id="@+id/p6"
+                android:id="@+id/hint6"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="ZA VOZILO JE OBAVEZNO"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -236,12 +235,12 @@
                 android:padding="8dp"
                 android:textColor="@color/black" />
             <TextView
-                android:id="@+id/p7"
+                android:id="@+id/hint7"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="POSTOJI I KASKO VARIJANTA"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -263,12 +262,12 @@
         android:baselineAligned="false">
 
         <EditText
-            android:id="@+id/result"
+            android:id="@+id/playerAnswer"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:text="OSIGURANJE"
+            android:hint="Type your answer here..."
             android:textSize="18sp"
             android:layout_marginTop="8dp"
             android:background="@drawable/player_one_border"
@@ -278,19 +277,20 @@
             android:textColor="@color/black"
             />
 
-        <TextView
-            android:id="@+id/pointsCounter"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="199dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:gravity="center"
-            android:text="30 points"
+            android:text="CONFIRM"
             android:textSize="18sp"
+            android:background="@drawable/lavender_border"
+            android:backgroundTint="@color/lavender"
             android:layout_marginTop="10dp"
             android:drawablePadding="8dp"
             android:padding="5dp"
-            android:textStyle="italic"
             android:textColor="@color/black"
             />
 

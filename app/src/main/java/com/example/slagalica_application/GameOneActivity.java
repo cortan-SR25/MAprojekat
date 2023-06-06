@@ -130,6 +130,7 @@ public class GameOneActivity extends AppCompatActivity {
                 timerText.setText("00");
                 isTimerRunning = false;
                 showTimerEndDialog();
+                confirmProcedure();
                 restartTimer();
             }
         };
