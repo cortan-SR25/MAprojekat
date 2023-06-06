@@ -151,8 +151,6 @@ public class GameThreeActivity extends AppCompatActivity {
                         for (int i = 0; i < symbols.size(); i++) {
                             symbols.get(i).setEnabled(false);
                         }
-                        deleteButton.setEnabled(false);
-                        okButton.setEnabled(false);
                         countDownTimer.cancel();
                         restartTimer();
                         finishGame();
@@ -347,8 +345,8 @@ public class GameThreeActivity extends AppCompatActivity {
                 timerText.setText("00");
                 isTimerRunning = false;
                 showTimerEndDialog();
-                restartTimer();
                 finishGame();
+                restartTimer();
             }
         };
 
@@ -420,6 +418,8 @@ public class GameThreeActivity extends AppCompatActivity {
         for (int i = 0; i < symbols.size(); i++) {
             symbols.get(i).setEnabled(false);
         }
+        okButton.setEnabled(false);
+        deleteButton.setEnabled(false);
 
         showCorrectCombination();
     }
