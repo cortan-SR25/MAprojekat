@@ -168,11 +168,7 @@ public class GameThreeActivity extends AppCompatActivity {
         mouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -185,11 +181,7 @@ public class GameThreeActivity extends AppCompatActivity {
         squareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -202,11 +194,7 @@ public class GameThreeActivity extends AppCompatActivity {
         circleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -219,11 +207,7 @@ public class GameThreeActivity extends AppCompatActivity {
         heartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4){
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -236,11 +220,7 @@ public class GameThreeActivity extends AppCompatActivity {
         triangleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -253,11 +233,7 @@ public class GameThreeActivity extends AppCompatActivity {
         starButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks == 4){
-                    for (int i = 0; i < symbols.size(); i++){
-                        symbols.get(i).setEnabled(false);
-                    }
-                } else {
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
