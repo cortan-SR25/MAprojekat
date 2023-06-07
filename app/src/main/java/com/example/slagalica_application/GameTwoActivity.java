@@ -38,6 +38,8 @@ public class GameTwoActivity extends AppCompatActivity {
 
     private ArrayList<TextView> hints;
 
+    private int totalPoints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,9 @@ public class GameTwoActivity extends AppCompatActivity {
         for (int i = 0; i < phrases.size(); i++) {
             hints.get(i).setText(phrases.get(i));
         }
-
+        Bundle bundle = getIntent().getExtras();
+        totalPoints = bundle.getInt("points");
+        player1Points.setText(String.valueOf(totalPoints) + " points");
 
 //        phrase = Phrases[Phrases.length];
 
@@ -256,7 +260,8 @@ public class GameTwoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (playerAnswer.getText().toString().trim().equals("Osiguranje")){
                     Toast.makeText(GameTwoActivity.this, "CORRECT ANSWER", Toast.LENGTH_SHORT).show();
-                    player1Points.setText("20 points");
+                    totalPoints = totalPoints + 20;
+                    player1Points.setText(totalPoints + " points");
                     isTimerRunning = false;
                     countDownTimer.cancel();
                     nextGame();
@@ -295,7 +300,15 @@ public class GameTwoActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(
+                        "points",
+                        totalPoints
+                );
+
                 Intent intent = new Intent(GameTwoActivity.this, GameThreeActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             }

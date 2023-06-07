@@ -58,6 +58,8 @@ public class GameThreeActivity extends AppCompatActivity {
 
     private boolean isTimerRunning = false;
 
+    private int totalPoints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +91,11 @@ public class GameThreeActivity extends AppCompatActivity {
         symbols.add(heartButton);
         symbols.add(triangleButton);
         symbols.add(starButton);
+
+        Bundle bundle = getIntent().getExtras();
+        totalPoints = bundle.getInt("points");
+
+        player1Points.setText(String.valueOf(totalPoints) + " points");
 
         setListeners();
         setSymbolListeners();
@@ -407,13 +414,16 @@ public class GameThreeActivity extends AppCompatActivity {
     private void finishGame(){
         if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true){
             Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("20 points");
+            player1Points.setText(String.valueOf(totalPoints + 20) + " points");
+            totalPoints = totalPoints + 20;
         } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true){
             Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("15 points");
+            player1Points.setText(String.valueOf(totalPoints + 15) + " points");
+            totalPoints = totalPoints + 15;
         } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true){
             Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("10 points");
+            player1Points.setText(String.valueOf(totalPoints + 10) + " points");
+            totalPoints = totalPoints + 10;
         } else {
             Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText("0 points");
@@ -433,7 +443,15 @@ public class GameThreeActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(
+                        "points",
+                        totalPoints
+                );
+
                 Intent intent = new Intent(GameThreeActivity.this, GameSixActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             }

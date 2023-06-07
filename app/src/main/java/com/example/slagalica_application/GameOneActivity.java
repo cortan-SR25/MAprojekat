@@ -56,6 +56,8 @@ public class GameOneActivity extends AppCompatActivity {
     private ArrayList<Button> buttons;
     private ArrayList<Integer> numbers;
 
+    private int totalPoints = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -235,6 +237,7 @@ public class GameOneActivity extends AppCompatActivity {
         if (resultNum == player1ResultNum){
             Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText("20 points");
+            totalPoints = 20;
         } else {
             Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText("0 points");
@@ -270,7 +273,15 @@ public class GameOneActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(
+                        "points",
+                        totalPoints
+                );
+
                 Intent intent = new Intent(GameOneActivity.this, GameTwoActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
             }

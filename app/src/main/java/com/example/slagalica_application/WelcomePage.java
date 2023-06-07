@@ -44,7 +44,7 @@ public class WelcomePage extends AppCompatActivity {
 
     //otvara mainActivity bez prijave
     public void openMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, GameOneActivity.class);
         startActivity(intent);
     }
 }

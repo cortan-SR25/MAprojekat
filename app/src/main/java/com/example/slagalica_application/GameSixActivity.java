@@ -161,6 +161,10 @@ public class GameSixActivity extends AppCompatActivity {
 
         Confirm();
 
+        Bundle bundle = getIntent().getExtras();
+        points = bundle.getInt("points");
+        player1Points.setText(String.valueOf(points) + " points");
+
         startTimer(startTime);
     }
 
@@ -265,6 +269,7 @@ public class GameSixActivity extends AppCompatActivity {
                     }
                     points += 20;
                     player1Points.setText(points + " points");
+                    Toast.makeText(GameSixActivity.this, "You won " + String.valueOf(points) + " points!", Toast.LENGTH_LONG).show();
 
                 }else if(aResult.getText().toString().trim().equals("Dim") && !isASolved){
                     for (int i = 0; i < aColumnWords.size() ; i++) {
