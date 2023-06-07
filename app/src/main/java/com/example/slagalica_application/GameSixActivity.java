@@ -213,28 +213,41 @@ public class GameSixActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (finalResult.getText().toString().trim().equals("Zavesa")){
                     Toast.makeText(GameSixActivity.this, "CORRECT ANSWER", Toast.LENGTH_SHORT).show();
+                    player1Points.setText("20 points");
                     for (int i = 0; i < aColumnWords.size() && i < bColumnWords.size() && i < cColumnWords.size() && i < dColumnWords.size(); i++) {
                         aFields.get(i).setText(aColumnWords.get(i));
                         bFields.get(i).setText(bColumnWords.get(i));
                         cFields.get(i).setText(cColumnWords.get(i));
                         dFields.get(i).setText(dColumnWords.get(i));
+
+                        aResult.setText("Dim");
+                        bResult.setText("Gvozdje");
+                        cResult.setText("Kada");
+                        dResult.setText("Spustanje");
+
+                        finalResult.setText("Zavesa");
+                        countDownTimer.cancel();
                     }
 
                 }else if(aResult.getText().toString().trim().equals("Dim")){
                     for (int i = 0; i < aColumnWords.size() ; i++) {
                         aFields.get(i).setText(aColumnWords.get(i));
+                        aResult.setText("Dim");
                     }
                 }else if(bResult.getText().toString().trim().equals("Gvozdje")){
                     for (int i = 0; i < bColumnWords.size() ; i++) {
                         bFields.get(i).setText(bColumnWords.get(i));
+                        bResult.setText("Gvozdje");
                     }
                 }else if(cResult.getText().toString().trim().equals("Kada")){
                     for (int i = 0; i < cColumnWords.size() ; i++) {
                         cFields.get(i).setText(cColumnWords.get(i));
+                        cResult.setText("Kada");
                     }
                 }else if(dResult.getText().toString().trim().equals("Spustanje")){
                     for (int i = 0; i < dColumnWords.size() ; i++) {
                         dFields.get(i).setText(dColumnWords.get(i));
+                        dResult.setText("Spustanje");
                     }
                 }
                 else{
