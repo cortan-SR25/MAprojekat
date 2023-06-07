@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/button_border.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/correct_answer_border.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/correct_circle.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/game_logo.xml" value="0.312" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/lavender_border.xml" value="0.2985" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/nav_home.xml" value="0.294" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/nav_settings.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/partially_correct_circle.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/player_one_border.xml" value="0.312" />
+        <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/player_two_border.xml" value="0.312" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/timer_bckg.xml" value="0.312" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/drawable/white_background.xml" value="0.312" />
         <entry key="..\:/Users/Sava/AndroidStudioProjects/SlagalicaApplication/app/src/main/res/layout/activity_edit_profile.xml" value="0.36666666666666664" />

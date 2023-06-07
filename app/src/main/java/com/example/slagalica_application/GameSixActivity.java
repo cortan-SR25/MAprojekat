@@ -46,6 +46,10 @@ public class GameSixActivity extends AppCompatActivity {
     private ArrayList<String> dColumnWords;
     private ArrayList<TextView> dFields;
 
+    private boolean isASolved, isBSolved, isCSolved, isDSolved = false;
+
+    private int points = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,7 +217,6 @@ public class GameSixActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (finalResult.getText().toString().trim().equals("Zavesa")){
                     Toast.makeText(GameSixActivity.this, "CORRECT ANSWER", Toast.LENGTH_SHORT).show();
-                    player1Points.setText("20 points");
                     for (int i = 0; i < aColumnWords.size() && i < bColumnWords.size() && i < cColumnWords.size() && i < dColumnWords.size(); i++) {
                         aFields.get(i).setText(aColumnWords.get(i));
                         bFields.get(i).setText(bColumnWords.get(i));
@@ -225,37 +228,112 @@ public class GameSixActivity extends AppCompatActivity {
                         cResult.setText("Kada");
                         dResult.setText("Spustanje");
 
+                        a1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        aResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+
+                        b1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        bResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+
+                        c1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        cResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+
+                        d1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        dResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+
                         finalResult.setText("Zavesa");
+                        finalResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+
+                        aResult.setFocusable(false);
+                        bResult.setFocusable(false);
+                        cResult.setFocusable(false);
+                        dResult.setFocusable(false);
+                        finalResult.setFocusable(false);
+
                         countDownTimer.cancel();
                     }
+                    points += 20;
+                    player1Points.setText(points + " points");
 
-                }else if(aResult.getText().toString().trim().equals("Dim")){
+                }else if(aResult.getText().toString().trim().equals("Dim") && !isASolved){
                     for (int i = 0; i < aColumnWords.size() ; i++) {
                         aFields.get(i).setText(aColumnWords.get(i));
                         aResult.setText("Dim");
 
-                        a1.setBackgroundColor(getResources().getColor(R.color.green));
-                        a2.setBackgroundColor(getResources().getColor(R.color.green));
-                        a3.setBackgroundColor(getResources().getColor(R.color.green));
-                        a4.setBackgroundColor(getResources().getColor(R.color.green));
-                        aResult.setBackgroundColor(getResources().getColor(R.color.green));
+                        a1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        a4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        aResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        aResult.setFocusable(false);
 
+                        isASolved = true;
                     }
-                }else if(bResult.getText().toString().trim().equals("Gvozdje")){
+                    points += 5;
+                    player1Points.setText(points + " points");
+
+                }else if(bResult.getText().toString().trim().equals("Gvozdje") && !isBSolved){
                     for (int i = 0; i < bColumnWords.size() ; i++) {
                         bFields.get(i).setText(bColumnWords.get(i));
                         bResult.setText("Gvozdje");
+
+                        b1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        b4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        bResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        bResult.setFocusable(false);
+
+                        isBSolved = true;
                     }
-                }else if(cResult.getText().toString().trim().equals("Kada")){
+                    points += 5;
+                    player1Points.setText(points + " points");
+
+                }else if(cResult.getText().toString().trim().equals("Kada") && !isCSolved){
                     for (int i = 0; i < cColumnWords.size() ; i++) {
                         cFields.get(i).setText(cColumnWords.get(i));
                         cResult.setText("Kada");
+
+                        c1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        c4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        cResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        cResult.setFocusable(false);
+
+                        isCSolved = true;
                     }
-                }else if(dResult.getText().toString().trim().equals("Spustanje")){
+                    points += 5;
+                    player1Points.setText(points + " points");
+
+                }else if(dResult.getText().toString().trim().equals("Spustanje") && !isDSolved){
                     for (int i = 0; i < dColumnWords.size() ; i++) {
                         dFields.get(i).setText(dColumnWords.get(i));
                         dResult.setText("Spustanje");
+
+                        d1.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d2.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d3.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        d4.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        dResult.setBackground(getResources().getDrawable(R.drawable.correct_answer_border));
+                        dResult.setFocusable(false);
+
+                        isDSolved = true;
                     }
+                    points += 5;
+                    player1Points.setText(points + " points");
+
                 }
                 else{
                     Toast.makeText(GameSixActivity.this, "WRONG ANSWER", Toast.LENGTH_SHORT).show();

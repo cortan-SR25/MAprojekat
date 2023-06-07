@@ -433,7 +433,7 @@ public class GameThreeActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent intent = new Intent(GameThreeActivity.this, GameFourActivity.class);
+                Intent intent = new Intent(GameThreeActivity.this, GameSixActivity.class);
                 startActivity(intent);
                 finish();
             }
