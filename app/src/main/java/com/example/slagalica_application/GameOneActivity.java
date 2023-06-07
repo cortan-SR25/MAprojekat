@@ -134,6 +134,7 @@ public class GameOneActivity extends AppCompatActivity {
                 showTimerEndDialog();
                 confirmProcedure();
                 restartTimer();
+                nextGame();
             }
         };
 
@@ -144,7 +145,7 @@ public class GameOneActivity extends AppCompatActivity {
     private void restartTimer(){
         countDownTimer.cancel();
 
-        countDownTimer = new CountDownTimer(6000, 1000) {
+        countDownTimer = new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 updateTimerText(millisUntilFinished);
@@ -232,14 +233,15 @@ public class GameOneActivity extends AppCompatActivity {
         double resultNum = Double.parseDouble(result.getText().toString());
 
         if (resultNum == player1ResultNum){
-            Toast.makeText(this, "20 POINTS", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText("20 points");
         } else {
-            Toast.makeText(this, "0 POINTS", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText("0 points");
         }
 
         restartTimer();
+        nextGame();;
     }
 
     private void showTimerEndDialog(){
@@ -261,6 +263,18 @@ public class GameOneActivity extends AppCompatActivity {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();
+    }
+
+    private void nextGame(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameOneActivity.this, GameTwoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 5000);
     }
 }
 

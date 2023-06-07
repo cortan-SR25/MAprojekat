@@ -4,10 +4,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -154,6 +156,7 @@ public class GameThreeActivity extends AppCompatActivity {
                         countDownTimer.cancel();
                         restartTimer();
                         finishGame();
+                        nextGame();
                     }
                     changeLetter();
                     numberOfClicks = 0;
@@ -347,6 +350,7 @@ public class GameThreeActivity extends AppCompatActivity {
                 showTimerEndDialog();
                 finishGame();
                 restartTimer();
+                nextGame();
             }
         };
 
@@ -356,7 +360,7 @@ public class GameThreeActivity extends AppCompatActivity {
     private void restartTimer(){
         countDownTimer.cancel();
 
-        countDownTimer = new CountDownTimer(6000, 1000) {
+        countDownTimer = new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 updateTimerText(millisUntilFinished);
@@ -422,5 +426,17 @@ public class GameThreeActivity extends AppCompatActivity {
         deleteButton.setEnabled(false);
 
         showCorrectCombination();
+    }
+
+    private void nextGame(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                Intent intent = new Intent(GameThreeActivity.this, GameFourActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 5000);
     }
 }
