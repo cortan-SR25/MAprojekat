@@ -264,6 +264,12 @@ public class GameTwoActivity extends AppCompatActivity {
                     player1Points.setText(totalPoints + " points");
                     isTimerRunning = false;
                     countDownTimer.cancel();
+                    hint2.setVisibility(View.VISIBLE);
+                    hint3.setVisibility(View.VISIBLE);
+                    hint4.setVisibility(View.VISIBLE);
+                    hint5.setVisibility(View.VISIBLE);
+                    hint6.setVisibility(View.VISIBLE);
+                    hint7.setVisibility(View.VISIBLE);
                     nextGame();
                 } else{
                     Toast.makeText(GameTwoActivity.this, "WRONG ANSWER", Toast.LENGTH_SHORT).show();
