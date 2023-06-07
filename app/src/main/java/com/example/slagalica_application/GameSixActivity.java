@@ -233,6 +233,13 @@ public class GameSixActivity extends AppCompatActivity {
                     for (int i = 0; i < aColumnWords.size() ; i++) {
                         aFields.get(i).setText(aColumnWords.get(i));
                         aResult.setText("Dim");
+
+                        a1.setBackgroundColor(getResources().getColor(R.color.green));
+                        a2.setBackgroundColor(getResources().getColor(R.color.green));
+                        a3.setBackgroundColor(getResources().getColor(R.color.green));
+                        a4.setBackgroundColor(getResources().getColor(R.color.green));
+                        aResult.setBackgroundColor(getResources().getColor(R.color.green));
+
                     }
                 }else if(bResult.getText().toString().trim().equals("Gvozdje")){
                     for (int i = 0; i < bColumnWords.size() ; i++) {

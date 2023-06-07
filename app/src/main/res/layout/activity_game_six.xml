@@ -210,6 +210,7 @@
                 android:layout_weight=".2"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
@@ -230,10 +231,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <Button
                 android:id="@+id/b2"
                 android:layout_width="match_parent"
@@ -242,10 +243,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <Button
                 android:id="@+id/b3"
                 android:layout_width="match_parent"
@@ -254,10 +255,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <Button
                 android:id="@+id/b4"
                 android:layout_width="match_parent"
@@ -266,10 +267,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <EditText
                 android:id="@+id/bResult"
                 android:layout_width="match_parent"
@@ -277,10 +278,11 @@
                 android:layout_weight=".2"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:background="@drawable/player_one_border"
+                android:textStyle="bold"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
     </LinearLayout>
@@ -306,6 +308,7 @@
         android:layout_marginEnd="30dp"
         android:textAlignment="center"
         android:background="@drawable/lavender_border"
+        android:backgroundTint="@color/lavender"
         android:text="CONFIRM" />
 
     <LinearLayout
@@ -328,6 +331,7 @@
                 android:layout_weight=".2"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
@@ -395,11 +399,12 @@
                 android:layout_weight=".2"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/d4"
@@ -407,11 +412,11 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight=".2"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <Button
@@ -422,10 +427,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <Button
                 android:id="@+id/d2"
                 android:layout_width="match_parent"
@@ -434,10 +439,10 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <Button
                 android:id="@+id/d1"
                 android:layout_width="match_parent"
@@ -445,10 +450,10 @@
                 android:layout_weight=".2"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
     </LinearLayout>
