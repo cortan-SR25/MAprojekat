@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
@@ -25,9 +28,11 @@ public class GameOneActivity extends AppCompatActivity {
     private TextView player1Points;
     private TextView player1Result;
 
+    private TextView player2Points;
+    private TextView player2Result;
+
     private TextView calculation;
     private Button result;
-
     private Button firstNumButton;
     private Button secondNumButton;
     private Button thirdNumButton;
@@ -58,6 +63,8 @@ public class GameOneActivity extends AppCompatActivity {
 
     private int totalPoints = 0;
 
+    private boolean iSolved;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +73,8 @@ public class GameOneActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer);
         player1Points = findViewById(R.id.playerOne_points);
         player1Result = findViewById(R.id.player1_result);
+        player2Points = findViewById(R.id.playerTwo_points);
+        player2Result = findViewById(R.id.player2_result);
         calculation = findViewById(R.id.calculation);
 
         firstNumButton = findViewById(R.id.num1_button);
@@ -119,7 +128,34 @@ public class GameOneActivity extends AppCompatActivity {
 
         setListeners();
 
+        iSolved = false;
+
         startTimer(startTime);
+
+        HomeFragment.socket.on("endMojBroj", args -> {
+            JSONObject mojBrojObj = (JSONObject) args[0];
+            MojBroj mojBroj = new MojBroj();
+            try {
+                mojBroj.setId(mojBrojObj.get("_id").toString());
+                mojBroj.setOpponentId(mojBrojObj.get("_opponentId").toString());
+                mojBroj.setNumber(mojBrojObj.get("number").toString());
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // if (mojBroj.id.equals(playerOneId) || mojBroj.OpponentId.equals(playerOneId)){ provera da li je socket poslao poruku za ova dva igraca ili neka druga dva
+            player2Result.setText(mojBroj.getNumber());
+            timerText.setText("00");
+            isTimerRunning = false;
+            //showTimerEndDialog();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    evalResults();
+                    restartTimer();
+                    nextGame();
+                }
+            });
+        });
     }
 
     private void startTimer(long time) {
@@ -133,10 +169,18 @@ public class GameOneActivity extends AppCompatActivity {
             public void onFinish() {
                 timerText.setText("00");
                 isTimerRunning = false;
-                showTimerEndDialog();
+                //showTimerEndDialog();
                 confirmProcedure();
-                restartTimer();
-                nextGame();
+                //if (player je ulogovan){
+                if (!iSolved) {
+                    sendSocketMessage();
+                    evalResults();
+                    restartTimer();
+                    nextGame();
+                }
+                //evalResults();
+                //restartTimer();
+                //nextGame();
             }
         };
 
@@ -176,7 +220,12 @@ public class GameOneActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //if (nije ulogovan korisnik){
+                //    confirmProcedure();
+                //}  else{
                 confirmProcedure();
+                sendSocketMessage();
+                //}
             }
         });
 
@@ -232,7 +281,10 @@ public class GameOneActivity extends AppCompatActivity {
 
         player1Result.setText(String.valueOf(player1ResultNum));
 
-        double resultNum = Double.parseDouble(result.getText().toString());
+        iSolved = true;
+
+        /* (if player nije ulogovan){
+            double resultNum = Double.parseDouble(result.getText().toString());
 
         if (resultNum == player1ResultNum){
             Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
@@ -244,7 +296,41 @@ public class GameOneActivity extends AppCompatActivity {
         }
 
         restartTimer();
-        nextGame();;
+        nextGame();
+        }*/
+    }
+
+    private void evalResults(){
+
+        double resultNum = Double.parseDouble(result.getText().toString());
+
+        double player2ResultNum = Double.parseDouble(player2Result.getText().toString());
+
+        if (resultNum == player1ResultNum){
+            Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("20 points");
+            player2Points.setText("0 points");
+            totalPoints = 20;
+        } else if (resultNum == player2ResultNum) {
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+            player2Points.setText("20 points");
+            player1Points.setText("0 points");
+            totalPoints = 0;
+        } else if (Math.abs((resultNum - player2ResultNum)) >= Math.abs((resultNum - player1ResultNum))){
+            //ovaj uslov ce biti u zavistnosti cija je runda
+            Toast.makeText(this, "5 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("5 points");
+            player2Points.setText("0 points");
+            totalPoints = 5;
+        } else if (Math.abs((resultNum - player1ResultNum)) > Math.abs((resultNum - player2ResultNum))){
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText("0 points");
+            player2Points.setText("5 points");
+            totalPoints = 0;
+        }
+
+        restartTimer();
+        nextGame();
     }
 
     private void showTimerEndDialog(){
@@ -286,6 +372,51 @@ public class GameOneActivity extends AppCompatActivity {
                 finish();
             }
         }, 5000);
+    }
+
+    public void sendSocketMessage(){
+        HomeFragment.socket.emit("playerCalculatedNumber", "1", "1", player1ResultNum);
+        //ove jedinice ce biti player IDs
+    }
+}
+
+class MojBroj{
+    private String id;
+    private String opponentId;
+    private String number;
+
+    public MojBroj(String id, String opponentId, String number) {
+        this.id = id;
+        this.opponentId = opponentId;
+        this.number = number;
+    }
+
+    public MojBroj() {
+
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOpponentId() {
+        return opponentId;
+    }
+
+    public void setOpponentId(String opponentId) {
+        this.opponentId = opponentId;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }
 

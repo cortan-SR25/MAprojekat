@@ -10,6 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
+import io.socket.client.Socket;
+
 
 public class HomeFragment extends Fragment {
 
@@ -21,17 +27,36 @@ public class HomeFragment extends Fragment {
     CardView gameFiveCard;
     CardView gameSixCard;
 
+    static Socket socket;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         inflatedView = inflater.inflate(R.layout.fragment_home, container, false);
         gameOneCard = inflatedView.findViewById(R.id.gameOne);
+
+        SocketHandler.setSocket();
+
+        socket = SocketHandler.getSocket();
+        socket.connect();
+
+        socket.on("startGame", args -> {
+           if (args[0] != null){
+               JSONArray playerIDs = (JSONArray) args[0];
+               /*dva igraca su spremna i ova dva ID smestiti u bazu da bi tokom igre korisnici
+                 odnosno aplikacija znala koja dva igraca igraju */
+               Intent intent = new Intent(getActivity(), GameOneActivity.class);
+               startActivity(intent);
+           }
+        });
+
         gameOneCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameOneActivity.class);
-                startActivity(intent);
+                socket.emit("playerReady", "1");
+                //Intent intent = new Intent(getActivity(), GameOneActivity.class);
+                //startActivity(intent);
             }
         });
 
@@ -83,5 +108,11 @@ public class HomeFragment extends Fragment {
 
         return inflatedView;
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        socket.close();
     }
 }
