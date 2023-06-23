@@ -1,16 +1,22 @@
 package com.example.slagalica_application;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -34,16 +40,33 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         inflatedView = inflater.inflate(R.layout.fragment_home, container, false);
+        String id = PreferenceManager.getDefaultSharedPreferences(getContext()).
+                getString("ID", null);
+
         gameOneCard = inflatedView.findViewById(R.id.gameOne);
 
         SocketHandler.setSocket();
 
         socket = SocketHandler.getSocket();
-        socket.connect();
+        try {
+            socket.connect();
+        } catch (Exception e){
+            System.out.println("ERROR " + e);
+        }
 
         socket.on("startGame", args -> {
            if (args[0] != null){
                JSONArray playerIDs = (JSONArray) args[0];
+               for (int i = 0; i < playerIDs.length(); i++){
+                   try {
+                       if (!playerIDs.get(i).toString().equals(id)){
+                           PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
+                                   putString("OPPONENT_ID", playerIDs.get(i).toString()).apply();
+                       }
+                   } catch (JSONException e) {
+                       throw new RuntimeException(e);
+                   }
+               }
                /*dva igraca su spremna i ova dva ID smestiti u bazu da bi tokom igre korisnici
                  odnosno aplikacija znala koja dva igraca igraju */
                Intent intent = new Intent(getActivity(), GameOneActivity.class);
@@ -54,7 +77,7 @@ public class HomeFragment extends Fragment {
         gameOneCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                socket.emit("playerReady", "1");
+                socket.emit("playerReady", id);
                 //Intent intent = new Intent(getActivity(), GameOneActivity.class);
                 //startActivity(intent);
             }
@@ -113,6 +136,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        socket.close();
+        //socket.close();
     }
 }

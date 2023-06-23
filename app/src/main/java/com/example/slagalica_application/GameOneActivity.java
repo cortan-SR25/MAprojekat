@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -65,10 +67,18 @@ public class GameOneActivity extends AppCompatActivity {
 
     private boolean iSolved;
 
+    private String id;
+    private String opponentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_one);
+
+        id = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("ID", null);
+        opponentId = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("OPPONENT_ID", null);
 
         timerText = findViewById(R.id.timer);
         player1Points = findViewById(R.id.playerOne_points);
@@ -133,20 +143,44 @@ public class GameOneActivity extends AppCompatActivity {
         startTimer(startTime);
 
         HomeFragment.socket.on("endMojBroj", args -> {
-            JSONObject mojBrojObj = (JSONObject) args[0];
-            MojBroj mojBroj = new MojBroj();
+            JSONArray mojBrojArr = (JSONArray) args[0];
+            System.out.println(args[0]);
+            System.out.println(mojBrojArr);
+            JSONObject p1mojBroj;
+            JSONObject p2mojBroj;
             try {
-                mojBroj.setId(mojBrojObj.get("_id").toString());
-                mojBroj.setOpponentId(mojBrojObj.get("_opponentId").toString());
-                mojBroj.setNumber(mojBrojObj.get("number").toString());
+                p1mojBroj = mojBrojArr.getJSONObject(0);
+                p2mojBroj = mojBrojArr.getJSONObject(1);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            // if (mojBroj.id.equals(playerOneId) || mojBroj.OpponentId.equals(playerOneId)){ provera da li je socket poslao poruku za ova dva igraca ili neka druga dva
-            player2Result.setText(mojBroj.getNumber());
-            timerText.setText("00");
-            isTimerRunning = false;
-            //showTimerEndDialog();
+            try {
+            if (p1mojBroj.get("_id").toString().equals(id)) { //provera da li je socket poslao poruku za ova dva igraca ili neka druga dva
+            MojBroj mojBroj = new MojBroj();
+
+                mojBroj.setId(p2mojBroj.get("_id").toString());
+                mojBroj.setOpponentId(p2mojBroj.get("_opponentId").toString());
+                mojBroj.setNumber(p2mojBroj.get("number").toString());
+
+                player2Result.setText(mojBroj.getNumber());
+                timerText.setText("00");
+                isTimerRunning = false;
+
+            } else if (p1mojBroj.get("_opponentId").toString().equals(id)){
+                MojBroj mojBroj = new MojBroj();
+                mojBroj.setId(p1mojBroj.get("_id").toString());
+                mojBroj.setOpponentId(p1mojBroj.get("_opponentId").toString());
+                mojBroj.setNumber(p1mojBroj.get("number").toString());
+
+
+                player2Result.setText(mojBroj.getNumber());
+                timerText.setText("00");
+                isTimerRunning = false;
+            }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -283,7 +317,7 @@ public class GameOneActivity extends AppCompatActivity {
 
         iSolved = true;
 
-        /* (if player nije ulogovan){
+        /* (if korisnik nije ulogovan){
             double resultNum = Double.parseDouble(result.getText().toString());
 
         if (resultNum == player1ResultNum){
@@ -358,7 +392,7 @@ public class GameOneActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             @Override
-            public void run() {
+          public void run() {
 
                 Bundle bundle = new Bundle();
                 bundle.putInt(
@@ -375,8 +409,7 @@ public class GameOneActivity extends AppCompatActivity {
     }
 
     public void sendSocketMessage(){
-        HomeFragment.socket.emit("playerCalculatedNumber", "1", "1", player1ResultNum);
-        //ove jedinice ce biti player IDs
+        HomeFragment.socket.emit("playerCalculatedNumber", id, opponentId, player1ResultNum);
     }
 }
 
