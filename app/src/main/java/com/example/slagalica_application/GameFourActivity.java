@@ -19,5 +19,7 @@ public class GameFourActivity extends AppCompatActivity {
         assignmentText = "Spojite fizčke pojmove sa međunarodno " +
                 "prihvaćenim jedinicama mere";
         assignment.setText(assignmentText);
+
+        //isSpojniceMatched, isSpojniceSolved, isSpojniceAllSolved, givePlayerAChanceSpojnice - socket
     }
 }

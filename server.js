@@ -23,6 +23,17 @@ class MojBroj{
 	}
 }
 
+class MojBrojStop{
+	_id;
+	min;
+	max;
+	constructor(id, min, max){
+		this._id = id;
+		this.min = min;
+		this.max = max;
+	}
+}
+
 class Skocko{
 	_id;
 	_opponentId;
@@ -92,5 +103,9 @@ io.on('connect', (socket) => {
 	
 	socket.on('notifyOpponentSkocko', (opponentId) => {
 		io.emit('opponentNotifiedSkocko', opponentId);
+	});
+	
+	socket.on('stopNumberMojBroj', (min, max, id) => {
+		io.emit('stoppedNumberMojBroj', new MojBrojStop(id, min, max));
 	});
 })
