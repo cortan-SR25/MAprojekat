@@ -14,11 +14,17 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import io.socket.client.Socket;
 
@@ -62,6 +68,20 @@ public class HomeFragment extends Fragment {
                        if (!playerIDs.get(i).toString().equals(id)){
                            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
                                    putString("OPPONENT_ID", playerIDs.get(i).toString()).apply();
+
+                           if (i == 0){
+                               PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
+                                       putString("PRIORITY", "2").apply();
+                           } else {
+                               PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
+                                       putString("PRIORITY", "1").apply();
+                           }
+
+                           PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
+                                   putString("POINTS", "0").apply();
+                           PreferenceManager.getDefaultSharedPreferences(getContext()).edit().
+                                   putString("OPPONENT_POINTS", "0").apply();
+
                        }
                    } catch (JSONException e) {
                        throw new RuntimeException(e);
@@ -69,7 +89,7 @@ public class HomeFragment extends Fragment {
                }
                /*dva igraca su spremna i ova dva ID smestiti u bazu da bi tokom igre korisnici
                  odnosno aplikacija znala koja dva igraca igraju */
-               Intent intent = new Intent(getActivity(), GameOneActivity.class);
+               Intent intent = new Intent(getActivity(), GameFourActivity.class);
                startActivity(intent);
            }
         });

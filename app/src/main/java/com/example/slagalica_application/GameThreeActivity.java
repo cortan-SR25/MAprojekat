@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
@@ -70,6 +71,8 @@ public class GameThreeActivity extends AppCompatActivity {
     private String id;
     private String opponentId;
 
+    private ArrayList<String> colorsList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,15 +135,20 @@ public class GameThreeActivity extends AppCompatActivity {
             JSONObject obj = (JSONObject) args[0];
 
             try {
-                if (obj.get("_opponentId").toString().equals(id)){
-
                 currentLetter = "g";
+                if (obj.get("_opponentId").toString().equals(id)){
 
                 showSocketData(obj);
 
-                setListeners();
-                setSymbolListeners();
-                restartTimer(10000);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //setListeners();
+                            //setSymbolListeners();
+                            showCorrectCombination();
+                            restartTimerEnd(5000);
+                        }
+                    });
 
                 }
             } catch (JSONException e) {
@@ -165,9 +173,8 @@ public class GameThreeActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            finishGame();
-                            restartTimer(5000);
-                            nextGame();
+                            showCorrectCombination();
+                            restartTimerEnd(5000);
                         }
                     });
 
@@ -182,27 +189,82 @@ public class GameThreeActivity extends AppCompatActivity {
             JSONObject obj = (JSONObject) args[0];
 
             try {
-                if (obj.get("_opponentId").toString().equals(id)) {
+                 if (numberOfTries == 0){
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Toast.makeText(getApplicationContext(), obj.get("combo").toString(), Toast.LENGTH_LONG).show();
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                    if (obj.get("_opponentId").toString().equals(id)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //setListeners();
+                                //setSymbolListeners();
+                                restartTimer(10000);
+                            }
+                        });
+                        showSocketData(obj);
+
+                    } else if (obj.get("_id").toString().equals(id)) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //setListeners();
+                                //setSymbolListeners();
+                                restartTimer(10000);
+                            }
+                        });
                     }
-                }
-            });
-            System.out.println(obj.get("combo"));
-            showSocketData(obj);
+                } else if (numberOfTries > 0){
+                     if (obj.get("_opponentId").toString().equals(id)) {
+                         showSocketData(obj);
+                         changeLetter();
+                     }
+                 }
+            }catch (JSONException e){
+                throw new RuntimeException(e);
+            }
+        });
 
-            changeLetter();
+        HomeFragment.socket.on("giveOpponentAChanceSkocko", args -> {
+
+            JSONObject obj = (JSONObject) args[0];
+
+            try {
+                if (obj.get("_id").toString().equals(id)) {
+
+                    showSocketData(obj);
+
+                    currentLetter = "h";
+
+                    showSocketData(obj);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            restartTimer(5000);
+                            finishGame();
+                            showCorrectCombination();
+                            nextGame();
+                        }
+                    });
 
                 }
             }catch (JSONException e){
                 throw new RuntimeException(e);
             }
+        });
+
+        HomeFragment.socket.on("opponentNotifiedSkocko", args -> {
+
+            String opponent = (String) args[0];
+
+                if (opponent.equals(id)){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            restartTimerEnd(10000);
+                        }
+                    });
+                }
         });
     }
 
@@ -227,6 +289,8 @@ public class GameThreeActivity extends AppCompatActivity {
                     letter = "e";
                 } else if (numberOfTries == 1){
                     letter = "f";
+                } else {
+                    letter = "g";
                 }
 
                 Resources res = getResources();
@@ -267,19 +331,31 @@ public class GameThreeActivity extends AppCompatActivity {
                         countDownTimer.cancel();
                         restartTimer(5000);
                         finishGame();
+                        showCorrectCombination();
                         nextGame();
                     }
-                    sendPlayerSkocko();
-                    changeLetter();
-                    numberOfClicks = 0;
 
-                    if (numberOfTries == -1){
-                        restartTimer(5000);
-                        finishGame();
-                        nextGame();
+                        if (numberOfTries == 0) {
+                            // Toast.makeText(getApplicationContext(), "HERE2", Toast.LENGTH_SHORT).show();
+                            sendPlayerSkocko();
+                            changeLetter();
+                            countDownTimer.cancel();
+                            restartTimerEnd(10000);
+                            HomeFragment.socket.emit("notifyOpponentSkocko", opponentId);
+                        } else if (numberOfTries > 0) {
+                            //Toast.makeText(getApplicationContext(), "HERE", Toast.LENGTH_SHORT).show();
+                            sendPlayerSkocko();
+                            changeLetter();
+                            numberOfClicks = 0;
+                        }
+
+                        if (numberOfTries == -1) {
+                            sendPlayerChanceSkocko();
+                            showCorrectCombination();
+                            restartTimerEnd(5000);
+                        }
                     }
                 }
-            }
         });
     }
 
@@ -367,6 +443,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
         String combo = "";
         String colors = "";
+        Toast.makeText(this, currentLetter, Toast.LENGTH_SHORT).show();
 
         Resources res = getResources();
 
@@ -375,28 +452,28 @@ public class GameThreeActivity extends AppCompatActivity {
             int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
             String val = textView.getText().toString();
-            combo = combo + stringSymbols.indexOf(val);
+            combo = combo + stringSymbols.indexOf(val) + ";";
         }
 
-        for (int j = 5; j < 9; j++){
+        for (int j = 0; j < colorsList.size(); j++){
             String strId = String.valueOf(j);
             int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
-            if (textView.getBackground() == getDrawable(R.drawable.correct_circle)){
-                colors = colors + "1";
-            } else if (textView.getBackground() == getDrawable(R.drawable.partially_correct_circle)){
-                colors = colors + "2";
+            if (colorsList.get(j).equals("dark purple")){
+                colors = colors + "1;";
+            } else if (colorsList.get(j).equals("purple")){
+                colors = colors + "2;";
             }
         }
 
         HomeFragment.socket.emit("sendPlayerSkocko", id, opponentId, combo, colors, isCorrect, numberOfTries);
-        //ne zakucati "1" i "1" vec koristiti prave (razlicite) id-jeve igraca
+
     }
 
     private void sendPlayerCorrectSkocko(){
 
         String combo = "";
-        String colors = "1111";
+        String colors = "1;1;1;1;";
 
         for (int i = 1; i < 5; i++){
             combo = combo + correctCombo.get(i);
@@ -414,10 +491,10 @@ public class GameThreeActivity extends AppCompatActivity {
 
         for (int i = 1; i < 5; i++){
             String strId = String.valueOf(i);
-            int id = res.getIdentifier("g" + strId, "id", getPackageName());
+            int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
             String val = textView.getText().toString();
-            combo = combo + stringSymbols.indexOf(val);
+            combo = combo + stringSymbols.indexOf(val) + ";";
         }
 
         for (int j = 5; j < 9; j++){
@@ -425,13 +502,17 @@ public class GameThreeActivity extends AppCompatActivity {
             int id = res.getIdentifier("g" + strId, "id", getPackageName());
             TextView textView = findViewById(id);
             if (textView.getBackground() == getDrawable(R.drawable.correct_circle)){
-                colors = colors + "1";
+                colors = colors + "1;";
             } else if (textView.getBackground() == getDrawable(R.drawable.partially_correct_circle)){
-                colors = colors + "2";
+                colors = colors + "2;";
             }
         }
 
-        HomeFragment.socket.emit("sendPlayerSkocko", id, opponentId, combo, colors, isCorrect, numberOfTries);
+        if (isCorrect) {
+            HomeFragment.socket.emit("sendPlayerSkockoCorrect", id, opponentId, combo, colors, true, numberOfTries);
+        } else {
+            HomeFragment.socket.emit("sendPlayerSkocko", id, opponentId, combo, colors, false, numberOfTries);
+        }
     }
 
     private void showCorrectCombination(){
@@ -451,7 +532,7 @@ public class GameThreeActivity extends AppCompatActivity {
     }
 
     private void checkCombination(){
-        ArrayList<String> colors = new ArrayList<>();
+        colorsList = new ArrayList<>();
         ArrayList<String> purples = new ArrayList<>();
         ArrayList<String> darkPurples = new ArrayList<>();
         ArrayList<String> wrongPlaced = new ArrayList<>();
@@ -489,17 +570,17 @@ public class GameThreeActivity extends AppCompatActivity {
             }
         }
 
-        colors.addAll(darkPurples);
-        colors.addAll(purples);
+        colorsList.addAll(darkPurples);
+        colorsList.addAll(purples);
 
         int circleCounter = 5;
 
-        for (int i = 0; i < colors.size(); i++){
+        for (int i = 0; i < colorsList.size(); i++){
             int id = res.getIdentifier(currentLetter + circleCounter, "id", getPackageName());
             TextView textView = findViewById(id);
             circleCounter = circleCounter + 1;
 
-            if (colors.get(i).equals("dark purple")){
+            if (colorsList.get(i).equals("dark purple")){
                 textView.setBackground(getDrawable(R.drawable.correct_circle));
             } else {
                 textView.setBackground(getDrawable(R.drawable.partially_correct_circle));
@@ -522,6 +603,8 @@ public class GameThreeActivity extends AppCompatActivity {
             currentLetter = "e";
         } else if (numberOfTries == 1){
             currentLetter = "f";
+        } else {
+            currentLetter = "g";
         }
     }
 
@@ -565,6 +648,27 @@ public class GameThreeActivity extends AppCompatActivity {
         countDownTimer.start();
     }
 
+    private void restartTimerEnd(int millis){
+        countDownTimer.cancel();
+
+        countDownTimer = new CountDownTimer(millis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+                finishGame();
+                nextGame();
+            }
+        };
+
+        countDownTimer.start();
+    }
+
     private void updateTimerText(long millisUntilFinished) {
         int seconds = (int) (millisUntilFinished / 1000);
 
@@ -594,11 +698,31 @@ public class GameThreeActivity extends AppCompatActivity {
     }
 
     private void showSocketData(JSONObject obj){
+
+        String correctComboStr = "";
+
+        for(Map.Entry<Integer, String> entry: correctCombo.entrySet()) {
+            correctComboStr = correctComboStr + entry.getValue() + ";";
+        }
+
+        /*if (numberOfTries == 0){
+            String v = obj.get("combo").toString();
+        }*/
+
         try {
             String myId = obj.get("_id").toString();
             String opponentId = obj.get("_opponentId").toString();
-            String combo = obj.get("combo").toString();
-            String colors = obj.get("colors").toString();
+            String combo;
+            String colors;
+
+            if (isCorrect && numberOfTries == -1){
+                combo = correctComboStr;
+                colors = "1;1;1;1;";
+            } else {
+                combo = obj.get("combo").toString();
+                colors = obj.get("colors").toString();
+            }
+
             String numOfTries = obj.get("numOfTries").toString();
 
             numberOfTries = Integer.parseInt(numOfTries);
@@ -607,22 +731,26 @@ public class GameThreeActivity extends AppCompatActivity {
 
             Resources res = getResources();
 
-            for (int j = 0; j < combo.length(); j++){
-                int num = Integer.parseInt(combo.split("")[j]);
+            for (int j = 0; j < 4; j++){
+                String comboElement = combo.split(";")[j];
+                System.out.println(comboElement);
+                int num = Integer.parseInt(comboElement);
                 int id = res.getIdentifier(currentLetter + (j + 1), "id", getPackageName());
                 TextView textView = findViewById(id);
 
                 textView.setText(stringSymbols.get(num));
             }
 
-            for (int i = 0; i < colors.length(); i++){
+            for (int i = 0; i < colors.split(";").length; i++){
                 int id = res.getIdentifier(currentLetter + circleCounter, "id", getPackageName());
                 TextView textView = findViewById(id);
                 circleCounter = circleCounter + 1;
 
-                if (colors.split("")[i] == "1"){
+                String colorElement = colors.split(";")[i];
+
+                if (colorElement.equals("1")){
                     textView.setBackground(getDrawable(R.drawable.correct_circle));
-                } else if (colors.split("")[i] == "2") {
+                } else if (colorElement.equals("2")) {
                     textView.setBackground(getDrawable(R.drawable.partially_correct_circle));
                 }
             }
@@ -655,8 +783,6 @@ public class GameThreeActivity extends AppCompatActivity {
         }
         okButton.setEnabled(false);
         deleteButton.setEnabled(false);
-
-        showCorrectCombination();
     }
 
     private void nextGame(){
@@ -671,7 +797,7 @@ public class GameThreeActivity extends AppCompatActivity {
                         totalPoints
                 );
 
-                Intent intent = new Intent(GameThreeActivity.this, GameSixActivity.class);
+                Intent intent = new Intent(GameThreeActivity.this, GameFourActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 finish();

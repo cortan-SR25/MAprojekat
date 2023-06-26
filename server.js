@@ -23,6 +23,17 @@ class MojBroj{
 	}
 }
 
+class MojBrojStop{
+	_id;
+	min;
+	max;
+	constructor(id, min, max){
+		this._id = id;
+		this.min = min;
+		this.max = max;
+	}
+}
+
 class Skocko{
 	_id;
 	_opponentId;
@@ -37,6 +48,15 @@ class Skocko{
 		this.colors = colors;
 		this.isCorrect = isCorrect;
 		this.numOfTries = numOfTries;
+	}
+}
+
+class Spojnica {
+	_opponentId;
+	matches;
+	constructor(opponentId, matches){
+		this._opponentId = opponentId;
+		this.matches = matches;
 	}
 }
 
@@ -56,7 +76,6 @@ io.on('connect', (socket) => {
 		console.log(player);
 		if (playersWaiting.length == 2){
 			io.emit('startGame', playersWaiting.toJSON());
-			console.log(playersWaiting);
 			playersWaiting = new List([]);
 		}
 	});
@@ -74,23 +93,40 @@ io.on('connect', (socket) => {
 			io.emit('endMojBroj', playersToRecieve);
 			return;
 		}
-		console.log(playerOneId + " " + playerTwoId + " " + number);
 		playersCalculated.add(new MojBroj(playerOneId, playerTwoId, number));
-		console.log(playersCalculated);
 	});
 	
 	socket.on('sendPlayerSkocko', (playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries) => {
-		console.log(isCorrect);
+		
 		if (isCorrect){
-			console.log(isCorrect)
 			io.emit("showPlayerSkockoCorrect", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
 			return;
 		}
 		
-		if (numOfTries == 0){
+		if (numOfTries == -1){
 			io.emit("giveOpponentAChanceSkocko", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
 		} else {
 			io.emit("showPlayerSkocko", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
 		}
+	});
+	
+	socket.on('notifyOpponentSkocko', (opponentId) => {
+		io.emit('opponentNotifiedSkocko', opponentId);
+	});
+	
+	socket.on('stopNumberMojBroj', (min, max, id) => {
+		io.emit('stoppedNumberMojBroj', new MojBrojStop(id, min, max));
+	});
+	
+	socket.on('sendEverythingCorrectSpojnice', (opponentId) => {
+		io.emit('receiveAllCorrectSpojnice', opponentId);
+	});
+	
+	socket.on('sendChanceSpojnice', (opponentId, matches) => {
+		io.emit('receiveChanceSpojnice', opponentId, matches);
+	});
+	
+		socket.on('sendFinishSpojnice', (opponentId, matches) => {
+		io.emit('receiveFinishSpojnice', opponentId, matches);
 	});
 })

@@ -437,4 +437,17 @@
             app:cornerRadius="20dp" />
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/stopBtn"
+        android:layout_width="117dp"
+        android:layout_height="53dp"
+        android:backgroundTint="@color/lavender"
+        android:text="stop"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.408" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

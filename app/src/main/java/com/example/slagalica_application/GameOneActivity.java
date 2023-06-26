@@ -49,6 +49,8 @@ public class GameOneActivity extends AppCompatActivity {
     private Button fifthOpButton;
     private Button sixthOpButton;
 
+    private Button stopButton;
+
     private Button confirmButton;
     private Button deleteButton;
 
@@ -70,6 +72,12 @@ public class GameOneActivity extends AppCompatActivity {
     private String id;
     private String opponentId;
 
+    private String p1PointsText;
+    private String p2PointsText;
+
+    private static int counter = 0;
+    private String priority;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +88,25 @@ public class GameOneActivity extends AppCompatActivity {
         opponentId = PreferenceManager.getDefaultSharedPreferences(this).
                 getString("OPPONENT_ID", null);
 
+        priority = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("PRIORITY", null);
+
+        p1PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("POINTS", null);
+
+        p2PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("OPPONENT_POINTS", null);
+
+
         timerText = findViewById(R.id.timer);
         player1Points = findViewById(R.id.playerOne_points);
         player1Result = findViewById(R.id.player1_result);
         player2Points = findViewById(R.id.playerTwo_points);
         player2Result = findViewById(R.id.player2_result);
         calculation = findViewById(R.id.calculation);
+
+        player1Points.setText(p1PointsText + " points");
+        player2Points.setText(p2PointsText + " points");
 
         firstNumButton = findViewById(R.id.num1_button);
         secondNumButton = findViewById(R.id.num2_button);
@@ -124,19 +145,41 @@ public class GameOneActivity extends AppCompatActivity {
         buttons.add(deleteButton);
 
         numbers = new ArrayList<Integer>();
-        numbers.add(3);
-        numbers.add(6);
-        numbers.add(4);
-        numbers.add(4);
-        numbers.add(20);
-        numbers.add(25);
-        numbers.add(473);
+        addNumbers(numbers);
 
-        for (int i = 0; i < numbers.size(); i++){
-            buttons.get(i).setText(numbers.get(i).toString());
+        stopButton = findViewById(R.id.stopBtn);
+
+        if (counter == 0 && priority.equals("2")){
+            stopButton.setVisibility(View.INVISIBLE);
+        } else if (counter == 1 && priority.equals("1")){
+            stopButton.setVisibility(View.INVISIBLE);
         }
 
-        setListeners();
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int min = 0;
+                int max = 7;
+
+                if (counter != 0){
+                    if (priority.equals("2")){
+                        min = 7;
+                        max = 14;
+                    }
+                }
+
+                HomeFragment.socket.emit("stopNumberMojBroj", min, max, opponentId);
+
+                for (int i = 0; i < 7; i++){
+                    buttons.get(i).setText(numbers.get(min++).toString());
+                }
+
+                setListeners();
+            }
+        });
+
+        //setListeners();
 
         iSolved = false;
 
@@ -172,7 +215,6 @@ public class GameOneActivity extends AppCompatActivity {
                 mojBroj.setOpponentId(p1mojBroj.get("_opponentId").toString());
                 mojBroj.setNumber(p1mojBroj.get("number").toString());
 
-
                 player2Result.setText(mojBroj.getNumber());
                 timerText.setText("00");
                 isTimerRunning = false;
@@ -184,12 +226,57 @@ public class GameOneActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    evalResults();
-                    restartTimer();
-                    nextGame();
+                    if (counter != 0) {
+                        evalResults();
+                        restartTimer();
+                        nextGame();
+                    } else {
+                        counter = 1;
+                        evalResults();
+                        restartTimerRound();
+                    }
+
                 }
             });
         });
+
+        HomeFragment.socket.on("stoppedNumberMojBroj", args -> {
+
+            JSONObject obj = (JSONObject) args[0];
+
+            try {
+                if (obj.get("_id").toString().equals(id)){
+
+                    int min = Integer.parseInt(obj.get("min").toString());
+                    int max = Integer.parseInt(obj.get("max").toString());
+
+                    for (int i = 0; i < 7; i++){
+                        buttons.get(i).setText(numbers.get(min++).toString());
+                    }
+
+                    setListeners();
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void addNumbers(ArrayList<Integer> numbers){
+        numbers.add(3);
+        numbers.add(6);
+        numbers.add(4);
+        numbers.add(4);
+        numbers.add(20);
+        numbers.add(25);
+        numbers.add(473);
+        numbers.add(2);
+        numbers.add(3);
+        numbers.add(9);
+        numbers.add(7);
+        numbers.add(20);
+        numbers.add(25);
+        numbers.add(55);
     }
 
     private void startTimer(long time) {
@@ -235,6 +322,27 @@ public class GameOneActivity extends AppCompatActivity {
             public void onFinish() {
                 timerText.setText("00");
                 isTimerRunning = false;
+            }
+        };
+
+        countDownTimer.start();
+    }
+
+    private void restartTimerRound(){
+
+        countDownTimer.cancel();
+
+        countDownTimer = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+                recreate();
             }
         };
 
@@ -336,6 +444,8 @@ public class GameOneActivity extends AppCompatActivity {
 
     private void evalResults(){
 
+        int opponentPoints = 0;
+
         double resultNum = Double.parseDouble(result.getText().toString());
 
         double player2ResultNum = Double.parseDouble(player2Result.getText().toString());
@@ -350,6 +460,7 @@ public class GameOneActivity extends AppCompatActivity {
             player2Points.setText("20 points");
             player1Points.setText("0 points");
             totalPoints = 0;
+            opponentPoints = 20;
         } else if (Math.abs((resultNum - player2ResultNum)) >= Math.abs((resultNum - player1ResultNum))){
             //ovaj uslov ce biti u zavistnosti cija je runda
             Toast.makeText(this, "5 POINTS", Toast.LENGTH_SHORT).show();
@@ -361,10 +472,22 @@ public class GameOneActivity extends AppCompatActivity {
             player1Points.setText("0 points");
             player2Points.setText("5 points");
             totalPoints = 0;
+            opponentPoints = 5;
         }
 
-        restartTimer();
-        nextGame();
+        int myPoints = Integer.parseInt(p1PointsText);
+        myPoints = myPoints + totalPoints;
+
+        int totalOpponentPoints = Integer.parseInt(p2PointsText);
+        totalOpponentPoints = opponentPoints + totalOpponentPoints;
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("POINTS", String.valueOf(myPoints)).apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("OPPONENT_POINTS", String.valueOf(totalOpponentPoints)).apply();
+
+        //restartTimer();
+        //nextGame();
     }
 
     private void showTimerEndDialog(){
