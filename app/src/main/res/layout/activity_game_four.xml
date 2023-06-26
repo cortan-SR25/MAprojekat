@@ -56,6 +56,7 @@
                         app:layout_constraintVertical_bias="0.17" />
 
                     <TextView
+                        android:id="@+id/playerOne_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="60 points"
@@ -111,6 +112,7 @@
                         app:layout_constraintVertical_bias="0.146" />
 
                     <TextView
+                        android:id="@+id/playerTwo_points"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="80 points"
@@ -168,13 +170,12 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="ITENZITET SVETLOSTI"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black"/>
             <TextView
                 android:id="@+id/a2"
                 android:layout_width="match_parent"
@@ -182,19 +183,17 @@
                 android:layout_marginBottom="8dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="UGAO"
                 android:textSize="18sp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black"/>
             <TextView
                 android:id="@+id/a3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="PRITISAK"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -207,20 +206,18 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="SNAGA"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <TextView
                 android:id="@+id/a5"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="MAGNETNI FLUKS"
                 android:textSize="18sp"
                 android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
@@ -240,33 +237,30 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="KANDELA"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <TextView
                 android:id="@+id/b2"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="RADIJAN"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_one_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <TextView
                 android:id="@+id/b3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="PASKAL"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/lavender_border"
@@ -279,19 +273,17 @@
                 android:layout_height="60dp"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:text="VAT"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/player_two_border"
+                android:background="@drawable/lavender_border"
                 android:drawablePadding="8dp"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
             <TextView
-                android:id="@+id/bResult"
+                android:id="@+id/b5"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textAlignment="center"
-                android:text="VEBER"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:background="@drawable/lavender_border"
