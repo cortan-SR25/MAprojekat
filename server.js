@@ -51,6 +51,15 @@ class Skocko{
 	}
 }
 
+class Spojnica {
+	_opponentId;
+	matches;
+	constructor(opponentId, matches){
+		this._opponentId = opponentId;
+		this.matches = matches;
+	}
+}
+
 var playersWaiting = new List([]);
 var playersCalculated = [];
 
@@ -107,5 +116,17 @@ io.on('connect', (socket) => {
 	
 	socket.on('stopNumberMojBroj', (min, max, id) => {
 		io.emit('stoppedNumberMojBroj', new MojBrojStop(id, min, max));
+	});
+	
+	socket.on('sendEverythingCorrectSpojnice', (opponentId) => {
+		io.emit('receiveAllCorrectSpojnice', opponentId);
+	});
+	
+	socket.on('sendChanceSpojnice', (opponentId, matches) => {
+		io.emit('receiveChanceSpojnice', opponentId, matches);
+	});
+	
+		socket.on('sendFinishSpojnice', (opponentId, matches) => {
+		io.emit('receiveFinishSpojnice', opponentId, matches);
 	});
 })
