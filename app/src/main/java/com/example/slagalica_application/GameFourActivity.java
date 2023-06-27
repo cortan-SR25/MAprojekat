@@ -535,7 +535,9 @@ public class GameFourActivity extends AppCompatActivity {
     }
 
     private void restartTimerEnd(){
-        countDownTimer2.cancel();
+        if (countDownTimer2 != null) {
+            countDownTimer2.cancel();
+        }
 
         countDownTimer3 = new CountDownTimer(5000, 1000) {
             @Override

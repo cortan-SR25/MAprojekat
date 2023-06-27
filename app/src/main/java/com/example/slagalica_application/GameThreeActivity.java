@@ -123,7 +123,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
         player1Points.setText(String.valueOf(totalPoints) + " points");
 
-        // if (igrac u prednosti je ulogovani igrac){
+        //if (counter == 0 && priority){
         setListeners();
         setSymbolListeners();
         //}
@@ -136,9 +136,9 @@ public class GameThreeActivity extends AppCompatActivity {
 
             try {
                 currentLetter = "g";
-                if (obj.get("_opponentId").toString().equals(id)){
+                if (obj.get("_opponentId").toString().equals(id)) {
 
-                showSocketData(obj);
+                    showSocketData(obj);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -147,6 +147,10 @@ public class GameThreeActivity extends AppCompatActivity {
                             //setSymbolListeners();
                             showCorrectCombination();
                             restartTimerEnd(5000);
+                            HomeFragment.socket.off("sendPlayerSkocko");
+                            HomeFragment.socket.off("notifyOpponentSkocko");
+                            finishGame();
+                            //nextGame();
                         }
                     });
 
@@ -175,11 +179,15 @@ public class GameThreeActivity extends AppCompatActivity {
                         public void run() {
                             showCorrectCombination();
                             restartTimerEnd(5000);
+                            HomeFragment.socket.off("sendPlayerSkocko");
+                            HomeFragment.socket.off("notifyOpponentSkocko");
+                            finishGame();
+                            //nextGame();
                         }
                     });
 
                 }
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -189,7 +197,7 @@ public class GameThreeActivity extends AppCompatActivity {
             JSONObject obj = (JSONObject) args[0];
 
             try {
-                 if (numberOfTries == 0){
+                if (numberOfTries == 0) {
 
                     if (obj.get("_opponentId").toString().equals(id)) {
                         runOnUiThread(new Runnable() {
@@ -213,13 +221,13 @@ public class GameThreeActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } else if (numberOfTries > 0){
-                     if (obj.get("_opponentId").toString().equals(id)) {
-                         showSocketData(obj);
-                         changeLetter();
-                     }
-                 }
-            }catch (JSONException e){
+                } else if (numberOfTries > 0) {
+                    if (obj.get("_opponentId").toString().equals(id)) {
+                        showSocketData(obj);
+                        changeLetter();
+                    }
+                }
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -229,7 +237,7 @@ public class GameThreeActivity extends AppCompatActivity {
             JSONObject obj = (JSONObject) args[0];
 
             try {
-                if (obj.get("_id").toString().equals(id)) {
+                if (obj.get("_opponentId").toString().equals(id)) {
 
                     showSocketData(obj);
 
@@ -240,15 +248,15 @@ public class GameThreeActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            restartTimer(5000);
+                            restartTimerEnd(5000);
                             finishGame();
                             showCorrectCombination();
-                            nextGame();
+                            //nextGame();
                         }
                     });
 
                 }
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -257,18 +265,19 @@ public class GameThreeActivity extends AppCompatActivity {
 
             String opponent = (String) args[0];
 
-                if (opponent.equals(id)){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            restartTimerEnd(10000);
-                        }
-                    });
-                }
+            if (opponent.equals(id)) {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        restartTimer(10000);
+                    }
+                });
+            }
         });
     }
 
-    private void setListeners(){
+    private void setListeners() {
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,15 +288,15 @@ public class GameThreeActivity extends AppCompatActivity {
 
                 String letter = "a";
 
-                if (numberOfTries == 5){
+                if (numberOfTries == 5) {
                     letter = "b";
-                } else if (numberOfTries == 4){
+                } else if (numberOfTries == 4) {
                     letter = "c";
-                } else if (numberOfTries == 3){
+                } else if (numberOfTries == 3) {
                     letter = "d";
-                } else if (numberOfTries == 2){
+                } else if (numberOfTries == 2) {
                     letter = "e";
-                } else if (numberOfTries == 1){
+                } else if (numberOfTries == 1) {
                     letter = "f";
                 } else {
                     letter = "g";
@@ -322,44 +331,49 @@ public class GameThreeActivity extends AppCompatActivity {
 
                     numberOfTries = numberOfTries - 1;
 
-                    if (isCorrect) {
+                    if (numberOfTries == -1) {
+                        sendPlayerChanceSkocko();
                         showCorrectCombination();
-                        sendPlayerCorrectSkocko();
-                        for (int i = 0; i < symbols.size(); i++) {
-                            symbols.get(i).setEnabled(false);
-                        }
-                        countDownTimer.cancel();
-                        restartTimer(5000);
+                        HomeFragment.socket.off("sendPlayerSkocko");
+                        HomeFragment.socket.off("notifyOpponentSkocko");
+                        restartTimerEnd(5000);
                         finishGame();
-                        showCorrectCombination();
-                        nextGame();
-                    }
-
-                        if (numberOfTries == 0) {
-                            // Toast.makeText(getApplicationContext(), "HERE2", Toast.LENGTH_SHORT).show();
-                            sendPlayerSkocko();
-                            changeLetter();
+                        //nextGame();
+                    } else {
+                        if (isCorrect) {
+                            //showCorrectCombination();
+                            sendPlayerCorrectSkocko();
+                            for (int i = 0; i < symbols.size(); i++) {
+                                symbols.get(i).setEnabled(false);
+                            }
                             countDownTimer.cancel();
-                            restartTimerEnd(10000);
-                            HomeFragment.socket.emit("notifyOpponentSkocko", opponentId);
-                        } else if (numberOfTries > 0) {
-                            //Toast.makeText(getApplicationContext(), "HERE", Toast.LENGTH_SHORT).show();
-                            sendPlayerSkocko();
-                            changeLetter();
-                            numberOfClicks = 0;
-                        }
-
-                        if (numberOfTries == -1) {
-                            sendPlayerChanceSkocko();
-                            showCorrectCombination();
                             restartTimerEnd(5000);
+                            finishGame();
+                            showCorrectCombination();
+                            //nextGame();
+                        } else {
+
+                            if (numberOfTries == 0) {
+                                // Toast.makeText(getApplicationContext(), "HERE2", Toast.LENGTH_SHORT).show();
+                                sendPlayerSkocko();
+                                changeLetter();
+                                countDownTimer.cancel();
+                                restartTimer(10000);
+                                HomeFragment.socket.emit("notifyOpponentSkocko", opponentId);
+                            } else if (numberOfTries > 0) {
+                                //Toast.makeText(getApplicationContext(), "HERE", Toast.LENGTH_SHORT).show();
+                                sendPlayerSkocko();
+                                changeLetter();
+                                numberOfClicks = 0;
+                            }
                         }
                     }
                 }
+            }
         });
     }
 
-    private void setSymbolListeners(){
+    private void setSymbolListeners() {
         mouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -402,7 +416,7 @@ public class GameThreeActivity extends AppCompatActivity {
         heartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (numberOfClicks < 4){
+                if (numberOfClicks < 4) {
                     numberOfClicks = numberOfClicks + 1;
                     Resources res = getResources();
                     int id = res.getIdentifier(currentLetter + numberOfClicks, "id", getPackageName());
@@ -439,7 +453,7 @@ public class GameThreeActivity extends AppCompatActivity {
         });
     }
 
-    private void sendPlayerSkocko(){
+    private void sendPlayerSkocko() {
 
         String combo = "";
         String colors = "";
@@ -447,7 +461,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
         Resources res = getResources();
 
-        for (int i = 1; i < 5; i++){
+        for (int i = 1; i < 5; i++) {
             String strId = String.valueOf(i);
             int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
@@ -455,13 +469,13 @@ public class GameThreeActivity extends AppCompatActivity {
             combo = combo + stringSymbols.indexOf(val) + ";";
         }
 
-        for (int j = 0; j < colorsList.size(); j++){
+        for (int j = 0; j < colorsList.size(); j++) {
             String strId = String.valueOf(j);
             int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
-            if (colorsList.get(j).equals("dark purple")){
+            if (colorsList.get(j).equals("dark purple")) {
                 colors = colors + "1;";
-            } else if (colorsList.get(j).equals("purple")){
+            } else if (colorsList.get(j).equals("purple")) {
                 colors = colors + "2;";
             }
         }
@@ -470,26 +484,26 @@ public class GameThreeActivity extends AppCompatActivity {
 
     }
 
-    private void sendPlayerCorrectSkocko(){
+    private void sendPlayerCorrectSkocko() {
 
         String combo = "";
         String colors = "1;1;1;1;";
 
-        for (int i = 1; i < 5; i++){
-            combo = combo + correctCombo.get(i);
+        for (int i = 1; i < 5; i++) {
+            combo = combo + stringSymbols.indexOf(correctCombo.get(i)) + ";";
         }
 
-        HomeFragment.socket.emit("sendPlayerCorrectSkocko", id, opponentId, combo, colors, true, numberOfTries);
+        HomeFragment.socket.emit("sendPlayerSkockoCorrect", id, opponentId, combo, colors, true, numberOfTries);
 
     }
 
-    private void sendPlayerChanceSkocko(){
+    private void sendPlayerChanceSkocko() {
         String combo = "";
         String colors = "";
 
         Resources res = getResources();
 
-        for (int i = 1; i < 5; i++){
+        for (int i = 1; i < 5; i++) {
             String strId = String.valueOf(i);
             int id = res.getIdentifier(currentLetter + strId, "id", getPackageName());
             TextView textView = findViewById(id);
@@ -497,13 +511,13 @@ public class GameThreeActivity extends AppCompatActivity {
             combo = combo + stringSymbols.indexOf(val) + ";";
         }
 
-        for (int j = 5; j < 9; j++){
+        for (int j = 5; j < 9; j++) {
             String strId = String.valueOf(j);
             int id = res.getIdentifier("g" + strId, "id", getPackageName());
             TextView textView = findViewById(id);
-            if (textView.getBackground() == getDrawable(R.drawable.correct_circle)){
+            if (textView.getBackground() == getDrawable(R.drawable.correct_circle)) {
                 colors = colors + "1;";
-            } else if (textView.getBackground() == getDrawable(R.drawable.partially_correct_circle)){
+            } else if (textView.getBackground() == getDrawable(R.drawable.partially_correct_circle)) {
                 colors = colors + "2;";
             }
         }
@@ -515,10 +529,10 @@ public class GameThreeActivity extends AppCompatActivity {
         }
     }
 
-    private void showCorrectCombination(){
+    private void showCorrectCombination() {
         int counter = 5;
         Resources res = getResources();
-        for (int i = 1; i < 5; i++){
+        for (int i = 1; i < 5; i++) {
             int id = res.getIdentifier("h" + i, "id", getPackageName());
             TextView textView = findViewById(id);
             String val = correctCombo.get(i);
@@ -531,7 +545,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
     }
 
-    private void checkCombination(){
+    private void checkCombination() {
         colorsList = new ArrayList<>();
         ArrayList<String> purples = new ArrayList<>();
         ArrayList<String> darkPurples = new ArrayList<>();
@@ -542,7 +556,7 @@ public class GameThreeActivity extends AppCompatActivity {
         HashMap<Integer, String> comboToCheck = new HashMap<>();
         comboToCheck.putAll(correctCombo);
 
-        for (int i = 1; i < 5; i++){
+        for (int i = 1; i < 5; i++) {
             int id = res.getIdentifier(currentLetter + i, "id", getPackageName());
             TextView textView = findViewById(id);
             String val = textView.getText().toString();
@@ -556,14 +570,14 @@ public class GameThreeActivity extends AppCompatActivity {
             }
         }
 
-        for (int i = 0; i < wrongPlaced.size(); i++){
+        for (int i = 0; i < wrongPlaced.size(); i++) {
 
             if (comboToCheck.containsValue(wrongPlaced.get(i))) {
                 purples.add("purple");
             }
 
-            for(Map.Entry<Integer, String> entry: comboToCheck.entrySet()) {
-                if(entry.getValue() == wrongPlaced.get(i)) {
+            for (Map.Entry<Integer, String> entry : comboToCheck.entrySet()) {
+                if (entry.getValue() == wrongPlaced.get(i)) {
                     comboToCheck.remove(entry.getKey());
                     break;
                 }
@@ -575,33 +589,33 @@ public class GameThreeActivity extends AppCompatActivity {
 
         int circleCounter = 5;
 
-        for (int i = 0; i < colorsList.size(); i++){
+        for (int i = 0; i < colorsList.size(); i++) {
             int id = res.getIdentifier(currentLetter + circleCounter, "id", getPackageName());
             TextView textView = findViewById(id);
             circleCounter = circleCounter + 1;
 
-            if (colorsList.get(i).equals("dark purple")){
+            if (colorsList.get(i).equals("dark purple")) {
                 textView.setBackground(getDrawable(R.drawable.correct_circle));
             } else {
                 textView.setBackground(getDrawable(R.drawable.partially_correct_circle));
             }
         }
 
-        if (counter == 4){
+        if (counter == 4) {
             isCorrect = true;
         }
     }
 
-    private void changeLetter(){
-        if (numberOfTries == 5){
+    private void changeLetter() {
+        if (numberOfTries == 5) {
             currentLetter = "b";
-        } else if (numberOfTries == 4){
+        } else if (numberOfTries == 4) {
             currentLetter = "c";
-        } else if (numberOfTries == 3){
+        } else if (numberOfTries == 3) {
             currentLetter = "d";
-        } else if (numberOfTries == 2){
+        } else if (numberOfTries == 2) {
             currentLetter = "e";
-        } else if (numberOfTries == 1){
+        } else if (numberOfTries == 1) {
             currentLetter = "f";
         } else {
             currentLetter = "g";
@@ -619,17 +633,18 @@ public class GameThreeActivity extends AppCompatActivity {
             public void onFinish() {
                 timerText.setText("00");
                 isTimerRunning = false;
-                showTimerEndDialog();
-                finishGame();
+                //showTimerEndDialog();
+                //finishGame();
                 restartTimer(5000);
-                nextGame();
+                //nextGame();
             }
         };
 
         countDownTimer.start();
         isTimerRunning = true;
     }
-    private void restartTimer(int millis){
+
+    private void restartTimer(int millis) {
         countDownTimer.cancel();
 
         countDownTimer = new CountDownTimer(millis, 1000) {
@@ -648,7 +663,7 @@ public class GameThreeActivity extends AppCompatActivity {
         countDownTimer.start();
     }
 
-    private void restartTimerEnd(int millis){
+    private void restartTimerEnd(int millis) {
         countDownTimer.cancel();
 
         countDownTimer = new CountDownTimer(millis, 1000) {
@@ -661,7 +676,9 @@ public class GameThreeActivity extends AppCompatActivity {
             public void onFinish() {
                 timerText.setText("00");
                 isTimerRunning = false;
-                finishGame();
+                HomeFragment.socket.off("sendPlayerSkocko");
+                HomeFragment.socket.off("notifyOpponentSkocko");
+                //finishGame();
                 nextGame();
             }
         };
@@ -676,7 +693,7 @@ public class GameThreeActivity extends AppCompatActivity {
         timerText.setText(time);
     }
 
-    private void showTimerEndDialog(){
+    private void showTimerEndDialog() {
         ConstraintLayout timerEndConstraintLayout = findViewById(R.id.timerEndConstraintLayout);
         View view = LayoutInflater.from(GameThreeActivity.this).inflate(R.layout.timer_end_dialog, timerEndConstraintLayout);
         Button alertDone = view.findViewById(R.id.alertDone);
@@ -691,17 +708,17 @@ public class GameThreeActivity extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-        if (alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();
     }
 
-    private void showSocketData(JSONObject obj){
+    private void showSocketData(JSONObject obj) {
 
         String correctComboStr = "";
 
-        for(Map.Entry<Integer, String> entry: correctCombo.entrySet()) {
+        for (Map.Entry<Integer, String> entry : correctCombo.entrySet()) {
             correctComboStr = correctComboStr + entry.getValue() + ";";
         }
 
@@ -715,7 +732,7 @@ public class GameThreeActivity extends AppCompatActivity {
             String combo;
             String colors;
 
-            if (isCorrect && numberOfTries == -1){
+            if (isCorrect && numberOfTries == -1) {
                 combo = correctComboStr;
                 colors = "1;1;1;1;";
             } else {
@@ -731,7 +748,7 @@ public class GameThreeActivity extends AppCompatActivity {
 
             Resources res = getResources();
 
-            for (int j = 0; j < 4; j++){
+            for (int j = 0; j < 4; j++) {
                 String comboElement = combo.split(";")[j];
                 System.out.println(comboElement);
                 int num = Integer.parseInt(comboElement);
@@ -741,14 +758,14 @@ public class GameThreeActivity extends AppCompatActivity {
                 textView.setText(stringSymbols.get(num));
             }
 
-            for (int i = 0; i < colors.split(";").length; i++){
+            for (int i = 0; i < colors.split(";").length; i++) {
                 int id = res.getIdentifier(currentLetter + circleCounter, "id", getPackageName());
                 TextView textView = findViewById(id);
                 circleCounter = circleCounter + 1;
 
                 String colorElement = colors.split(";")[i];
 
-                if (colorElement.equals("1")){
+                if (colorElement.equals("1")) {
                     textView.setBackground(getDrawable(R.drawable.correct_circle));
                 } else if (colorElement.equals("2")) {
                     textView.setBackground(getDrawable(R.drawable.partially_correct_circle));
@@ -760,16 +777,16 @@ public class GameThreeActivity extends AppCompatActivity {
         }
     }
 
-    private void finishGame(){
-        if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true){
+    private void finishGame() {
+        if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true) {
             Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText(String.valueOf(totalPoints + 20) + " points");
             totalPoints = totalPoints + 20;
-        } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true){
+        } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true) {
             Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText(String.valueOf(totalPoints + 15) + " points");
             totalPoints = totalPoints + 15;
-        } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true){
+        } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true) {
             Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
             player1Points.setText(String.valueOf(totalPoints + 10) + " points");
             totalPoints = totalPoints + 10;
@@ -785,23 +802,23 @@ public class GameThreeActivity extends AppCompatActivity {
         deleteButton.setEnabled(false);
     }
 
-    private void nextGame(){
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
-            @Override
-            public void run() {
+    private void nextGame() {
+        //Handler handler = new Handler();
+        //handler.postDelayed(new Runnable(){
+        //@Override
+        //public void run() {
 
-                Bundle bundle = new Bundle();
-                bundle.putInt(
-                        "points",
-                        totalPoints
-                );
+        Bundle bundle = new Bundle();
+        bundle.putInt(
+                "points",
+                totalPoints
+        );
 
-                Intent intent = new Intent(GameThreeActivity.this, GameFourActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                finish();
-            }
-        }, 5000);
+        Intent intent = new Intent(GameThreeActivity.this, GameFourActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        finish();
+        //}
+        //}, 5000);
     }
 }

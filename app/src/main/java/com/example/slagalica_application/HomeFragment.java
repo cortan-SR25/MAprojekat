@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
                }
                /*dva igraca su spremna i ova dva ID smestiti u bazu da bi tokom igre korisnici
                  odnosno aplikacija znala koja dva igraca igraju */
-               Intent intent = new Intent(getActivity(), GameFourActivity.class);
+               Intent intent = new Intent(getActivity(), GameOneActivity.class);
                startActivity(intent);
            }
         });

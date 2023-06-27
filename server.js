@@ -96,8 +96,13 @@ io.on('connect', (socket) => {
 		playersCalculated.add(new MojBroj(playerOneId, playerTwoId, number));
 	});
 	
+	socket.on('sendPlayerSkockoCorrect', (playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries) => {
+		console.log(numOfTries);
+		io.emit("showPlayerSkockoCorrect", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
+	});
+	
 	socket.on('sendPlayerSkocko', (playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries) => {
-		
+		console.log(numOfTries);
 		if (isCorrect){
 			io.emit("showPlayerSkockoCorrect", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
 			return;
