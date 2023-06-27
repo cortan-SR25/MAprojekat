@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,8 @@ public class GameFourActivity extends AppCompatActivity {
     private TextView player2Points;
 
     private CountDownTimer countDownTimer;
+    private CountDownTimer countDownTimer2;
+    private CountDownTimer countDownTimer3;
     private boolean isTimerRunning = false;
 
     private long startTime = 60000;
@@ -155,7 +158,8 @@ public class GameFourActivity extends AppCompatActivity {
 
         getData();
 
-        if (counter == 0 && priority.equals("1")) {
+        if ((counter == 0 && priority.equals("1"))
+                || (counter == 1 && priority.equals("2"))) {
             aWord1.setBackground(getDrawable(R.drawable.player_one_border));
         }
 
@@ -227,7 +231,7 @@ public class GameFourActivity extends AppCompatActivity {
                 tv1.setText(sp.getWordOne());
                 tv2.setText(sp.getWordTwo());
 
-                String match = sp.getWordOne() + ";" + spojnica.getWordTwo();
+                String match = sp.getWordOne() + ";" + sp.getWordTwo();
                 matches.add(match);
             }
 
@@ -236,6 +240,8 @@ public class GameFourActivity extends AppCompatActivity {
                 setListeners(bWords);
             }
         }
+
+        startTimer(30000);
 
         /*DatabaseReference reference = FirebaseDatabase.getInstance().getReference("spojnice");
         Query checkSpojnicaDatabase = reference.orderByChild("gameId").equalTo("1");
@@ -288,7 +294,15 @@ public class GameFourActivity extends AppCompatActivity {
                     aWords.get(i).setBackground(getDrawable(R.drawable.player_two_border));
                     bWords.get(i).setBackground(getDrawable(R.drawable.player_two_border));
                 }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        restartTimerEnd();
+                    }
+                });
             }
+
         });
     }
 
@@ -307,30 +321,31 @@ public class GameFourActivity extends AppCompatActivity {
 
                 originalAWords.addAll(aWords);
                 originalBWords.addAll(bWords);
+                if (!toMatch[0].equals("")) {
+                    for (int i = 0; i < toMatch.length; i++) {
+                        String aColumn;
+                        String bColumn;
 
-                for (int i = 0; i < toMatch.length; i++) {
-                    String aColumn;
-                    String bColumn;
+                        aColumn = toMatch[i].split(";")[0];
+                        bColumn = toMatch[i].split(";")[1];
 
-                    aColumn = toMatch[i].split(";")[0];
-                    bColumn = toMatch[i].split(";")[1];
+                        int id1 = res.getIdentifier(aColumn, "id", getPackageName());
+                        int id2 = res.getIdentifier(bColumn, "id", getPackageName());
 
-                    int id1 = res.getIdentifier(aColumn, "id", getPackageName());
-                    int id2 = res.getIdentifier(bColumn, "id", getPackageName());
+                        TextView tv1 = findViewById(id1);
+                        TextView tv2 = findViewById(id2);
 
-                    TextView tv1 = findViewById(id1);
-                    TextView tv2 = findViewById(id2);
+                        tv1.setBackground(getDrawable(R.drawable.player_two_border));
+                        tv2.setBackground(getDrawable(R.drawable.player_two_border));
 
-                    tv1.setBackground(getDrawable(R.drawable.player_two_border));
-                    tv2.setBackground(getDrawable(R.drawable.player_two_border));
+                        matches.remove(toMatch[i]);
 
-                    matches.remove(toMatch[i]);
+                        aWords.remove(tv1);
+                        bWords.remove(tv2);
 
-                    aWords.remove(tv1);
-                    bWords.remove(tv2);
-
-                    numOfTries = numOfTries + 1;
-                    wordsToMatch.add(toMatch[i]);
+                        numOfTries = numOfTries + 1;
+                        wordsToMatch.add(toMatch[i]);
+                    }
                 }
 
                 player1Matched = 5 - wordsToMatch.size();
@@ -339,6 +354,7 @@ public class GameFourActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         setListeners(bWords);
+                        restartTimer();
                     }
                 });
 
@@ -395,11 +411,14 @@ public class GameFourActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        restartTimerEnd();
+                        HomeFragment.socket.off("sendFinishSpojnice");
                     }
                 });
 
             }
         });
+
     }
 
     private void setListeners(ArrayList<TextView> bWords) {
@@ -433,8 +452,18 @@ public class GameFourActivity extends AppCompatActivity {
                             } else {
                                 if (matches.size() == 0) {
                                     HomeFragment.socket.emit("sendEverythingCorrectSpojnice", opponentId);
+                                    for (int i = 0; i < aWords.size(); i++){
+                                        aWords.get(i).setEnabled(false);
+                                        bWords.get(i).setEnabled(false);
+                                    }
+                                    restartTimerEnd();
                                 } else {
                                     HomeFragment.socket.emit("sendChanceSpojnice", opponentId, matchAB);
+                                    for (int i = 0; i < aWords.size(); i++){
+                                        aWords.get(i).setEnabled(false);
+                                        bWords.get(i).setEnabled(false);
+                                    }
+                                    restartTimer();
                                 }
                             }
                         } else {
@@ -451,6 +480,12 @@ public class GameFourActivity extends AppCompatActivity {
                                 }
                             } else {
                                 HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
+                                for (int i = 0; i < originalAWords.size(); i++){
+                                    originalAWords.get(i).setEnabled(false);
+                                    originalBWords.get(i).setEnabled(false);
+                                }
+                                restartTimerEnd();
+                                HomeFragment.socket.off("sendFinishSpojnice");
                             }
                         }
 
@@ -465,6 +500,11 @@ public class GameFourActivity extends AppCompatActivity {
                                 } else {
                                     aWords.get(numOfTries).setBackground(getDrawable(R.drawable.lavender_border));
                                     HomeFragment.socket.emit("sendChanceSpojnice", opponentId, matchAB);
+                                    restartTimer();
+                                    for (int i = 0; i < aWords.size(); i++){
+                                        aWords.get(i).setEnabled(false);
+                                        bWords.get(i).setEnabled(false);
+                                    }
                                 }
                             } else {
                                 aWords.get(numOfSecondTries).setBackground(getDrawable(R.drawable.lavender_border));
@@ -473,12 +513,110 @@ public class GameFourActivity extends AppCompatActivity {
                                     numOfSecondTries = numOfSecondTries + 1;
                                 } else {
                                     HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
+                                    restartTimerEnd();
+                                    HomeFragment.socket.off("sendFinishSpojnice");
+                                    for (int i = 0; i < originalAWords.size(); i++){
+                                        originalAWords.get(i).setEnabled(false);
+                                        originalBWords.get(i).setEnabled(false);
+                                    }
                                 }
                             }
                     }
                 }
             });
         }
+    }
+
+    private void updateTimerText(long millisUntilFinished) {
+        int seconds = (int) (millisUntilFinished / 1000);
+
+        String time = String.format("%02d", seconds);
+        timerText.setText(time);
+    }
+
+    private void restartTimerEnd(){
+        countDownTimer2.cancel();
+
+        countDownTimer3 = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+
+                if(counter != 0){
+                    finish();
+                } else {
+                    counter = 1;
+                    recreate();
+                }
+            }
+        };
+
+        countDownTimer3.start();
+    }
+
+    private void restartTimer(){
+        countDownTimer.cancel();
+
+        countDownTimer2 = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+
+                if ((counter == 0 && priority.equals("2")) ||
+                        (counter == 1 && priority.equals("1"))) {
+                    HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
+                    restartTimerEnd();
+
+                    for (int i = 0; i < originalAWords.size(); i++){
+                        originalAWords.get(i).setEnabled(false);
+                        originalBWords.get(i).setEnabled(false);
+                    }
+                }
+            }
+        };
+
+        countDownTimer2.start();
+    }
+
+    private void startTimer(long time){
+        countDownTimer = new CountDownTimer(time, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                updateTimerText(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("00");
+                isTimerRunning = false;
+                if ((counter == 0 && priority.equals("1")) ||
+                        (counter == 1 && priority.equals("2"))) {
+                    HomeFragment.socket.emit("sendChanceSpojnice", opponentId, matchAB);
+                    restartTimer();
+                    for (int i = 0; i < aWords.size(); i++){
+                        aWords.get(i).setEnabled(false);
+                        bWords.get(i).setEnabled(false);
+                    }
+                }
+                //evalResults();
+                //nextGame();
+            }
+        };
+
+        countDownTimer.start();
+        isTimerRunning = true;
     }
 }
 
