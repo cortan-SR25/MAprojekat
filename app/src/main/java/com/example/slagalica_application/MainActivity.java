@@ -17,16 +17,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     CardView gameOne;
 
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
 
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
         setSupportActionBar(toolbar);
@@ -59,7 +64,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_profile:
+                Bundle oldIntent = getIntent().getExtras();
+                String name = oldIntent.getString("name");
+                String username = oldIntent.getString("username");
+                String email = oldIntent.getString("email");
+                String password = oldIntent.getString("password");
+
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+
+                intent.putExtra("name", name);
+                intent.putExtra("username", username);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
+
                 startActivity(intent);
                 break;
 
@@ -69,7 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_logout:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                signOutUser();
+
+                Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -86,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-//    Ovde uvozimo Game 1 Activity
+    private void signOutUser(){
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
 
 }
