@@ -24,6 +24,8 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameOneActivity extends AppCompatActivity {
     private TextView timerText;
@@ -145,7 +147,6 @@ public class GameOneActivity extends AppCompatActivity {
         buttons.add(deleteButton);
 
         numbers = new ArrayList<Integer>();
-        addNumbers(numbers);
 
         stopButton = findViewById(R.id.stopBtn);
 
@@ -159,20 +160,32 @@ public class GameOneActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                int min = 0;
-                int max = 7;
+                int randomResult = ThreadLocalRandom.current().nextInt(1, 500);
 
-                if (counter != 0){
-                    if (priority.equals("2")){
-                        min = 7;
-                        max = 14;
-                    }
-                }
+                int[] smallies = new int[]{10, 15, 20};
+                int[] biggies = new int[]{25, 50, 75, 100};
 
-                HomeFragment.socket.emit("stopNumberMojBroj", min, max, opponentId);
+                int num1 = ThreadLocalRandom.current().nextInt(1, 10);
+                int num2 = ThreadLocalRandom.current().nextInt(1, 10);
+                int num3 = ThreadLocalRandom.current().nextInt(1, 10);
+                int num4 = ThreadLocalRandom.current().nextInt(1, 10);
+
+                int smallie = smallies[ThreadLocalRandom.current().nextInt(0, 3)];
+                int biggie = biggies[ThreadLocalRandom.current().nextInt(0, 4)];
+
+                numbers.add(num1);
+                numbers.add(num2);
+                numbers.add(num3);
+                numbers.add(num4);
+                numbers.add(smallie);
+                numbers.add(biggie);
+                numbers.add(randomResult);
+
+                HomeFragment.socket.emit("stopNumberMojBroj", opponentId, num1, num2, num3,
+                        num4, smallie, biggie, randomResult);
 
                 for (int i = 0; i < 7; i++){
-                    buttons.get(i).setText(numbers.get(min++).toString());
+                    buttons.get(i).setText(String.valueOf(numbers.get(i)));
                 }
 
                 setListeners();
@@ -247,11 +260,24 @@ public class GameOneActivity extends AppCompatActivity {
             try {
                 if (obj.get("_id").toString().equals(id)){
 
-                    int min = Integer.parseInt(obj.get("min").toString());
-                    int max = Integer.parseInt(obj.get("max").toString());
+                    int num1 = Integer.parseInt(obj.get("num1").toString());
+                    int num2 = Integer.parseInt(obj.get("num2").toString());
+                    int num3 = Integer.parseInt(obj.get("num3").toString());
+                    int num4 = Integer.parseInt(obj.get("num4").toString());
+                    int num5 = Integer.parseInt(obj.get("num5").toString());
+                    int num6 = Integer.parseInt(obj.get("num6").toString());
+                    int num7 = Integer.parseInt(obj.get("num7").toString());
+
+                    numbers.add(num1);
+                    numbers.add(num2);
+                    numbers.add(num3);
+                    numbers.add(num4);
+                    numbers.add(num5);
+                    numbers.add(num6);
+                    numbers.add(num7);
 
                     for (int i = 0; i < 7; i++){
-                        buttons.get(i).setText(numbers.get(min++).toString());
+                        buttons.get(i).setText(String.valueOf(numbers.get(i)));
                     }
 
                     setListeners();
@@ -260,23 +286,6 @@ public class GameOneActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         });
-    }
-
-    private void addNumbers(ArrayList<Integer> numbers){
-        numbers.add(3);
-        numbers.add(6);
-        numbers.add(4);
-        numbers.add(4);
-        numbers.add(20);
-        numbers.add(25);
-        numbers.add(473);
-        numbers.add(2);
-        numbers.add(3);
-        numbers.add(9);
-        numbers.add(7);
-        numbers.add(20);
-        numbers.add(25);
-        numbers.add(55);
     }
 
     private void startTimer(long time) {
@@ -450,36 +459,42 @@ public class GameOneActivity extends AppCompatActivity {
 
         double player2ResultNum = Double.parseDouble(player2Result.getText().toString());
 
+        int myPoints = Integer.parseInt(p1PointsText);
+
+        int totalOpponentPoints = Integer.parseInt(p2PointsText);
+
         if (resultNum == player1ResultNum){
             Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("20 points");
-            player2Points.setText("0 points");
             totalPoints = 20;
+            myPoints = myPoints + totalPoints;
+            String totalPointsStr = myPoints + " points";
+            player1Points.setText(totalPointsStr);
+            player2Points.setText(totalOpponentPoints + " points");
         } else if (resultNum == player2ResultNum) {
             Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
-            player2Points.setText("20 points");
-            player1Points.setText("0 points");
             totalPoints = 0;
             opponentPoints = 20;
+            totalOpponentPoints = opponentPoints + totalOpponentPoints;
+            String totalPointsStr = totalOpponentPoints + " points";
+            player2Points.setText(totalPointsStr);
+            player1Points.setText(myPoints + " points");
         } else if (Math.abs((resultNum - player2ResultNum)) >= Math.abs((resultNum - player1ResultNum))){
             //ovaj uslov ce biti u zavistnosti cija je runda
             Toast.makeText(this, "5 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("5 points");
-            player2Points.setText("0 points");
             totalPoints = 5;
+            myPoints = myPoints + totalPoints;
+            String totalPointsStr = myPoints + " points";
+            player1Points.setText(totalPointsStr);
+            player2Points.setText(totalOpponentPoints + " points");
         } else if (Math.abs((resultNum - player1ResultNum)) > Math.abs((resultNum - player2ResultNum))){
             Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("0 points");
-            player2Points.setText("5 points");
             totalPoints = 0;
             opponentPoints = 5;
+            totalOpponentPoints = opponentPoints + totalOpponentPoints;
+            String totalPointsStr = totalOpponentPoints + " points";
+            player2Points.setText(totalPointsStr);
+            player1Points.setText(myPoints + " points");
         }
-
-        int myPoints = Integer.parseInt(p1PointsText);
-        myPoints = myPoints + totalPoints;
-
-        int totalOpponentPoints = Integer.parseInt(p2PointsText);
-        totalOpponentPoints = opponentPoints + totalOpponentPoints;
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().
                 putString("POINTS", String.valueOf(myPoints)).apply();

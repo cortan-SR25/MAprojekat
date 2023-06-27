@@ -25,12 +25,22 @@ class MojBroj{
 
 class MojBrojStop{
 	_id;
-	min;
-	max;
-	constructor(id, min, max){
+	num1;
+	num2;
+	num3;
+	num4;
+	num5;
+	num6;
+	num7;
+	constructor(id, n1, n2, n3, n4, n5, n6, n7){
 		this._id = id;
-		this.min = min;
-		this.max = max;
+		this.num1 = n1;
+		this.num2 = n2;
+		this.num3 = n3;
+		this.num4 = n4;
+		this.num5 = n5;
+		this.num6 = n6;
+		this.num7 = n7;
 	}
 }
 
@@ -119,8 +129,8 @@ io.on('connect', (socket) => {
 		io.emit('opponentNotifiedSkocko', opponentId);
 	});
 	
-	socket.on('stopNumberMojBroj', (min, max, id) => {
-		io.emit('stoppedNumberMojBroj', new MojBrojStop(id, min, max));
+	socket.on('stopNumberMojBroj', (id, n1, n2, n3, n4, n5, n6, n7) => {
+		io.emit('stoppedNumberMojBroj', new MojBrojStop(id, n1, n2, n3, n4, n5, n6, n7));
 	});
 	
 	socket.on('sendEverythingCorrectSpojnice', (opponentId) => {
