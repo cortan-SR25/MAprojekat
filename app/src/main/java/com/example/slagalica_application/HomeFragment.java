@@ -98,8 +98,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 socket.emit("playerReady", id);
-                //Intent intent = new Intent(getActivity(), GameOneActivity.class);
-                //startActivity(intent);
+//                Intent intent = new Intent(getActivity(), GameOneActivity.class);
+//                startActivity(intent);
             }
         });
 

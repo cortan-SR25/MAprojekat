@@ -14,10 +14,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CardView gameOne;
 
     FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +84,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
 
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+            case R.id.nav_gamesStats:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GamesStatisticFragment()).commit();
+                break;
+
+            case R.id.nav_friends:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new YourFriendsFragment()).commit();
+                break;
+
+            case R.id.nav_addFriends:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddFriendsFragment()).commit();
                 break;
 
             case R.id.nav_logout:
@@ -112,5 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
 
     }
+
 
 }

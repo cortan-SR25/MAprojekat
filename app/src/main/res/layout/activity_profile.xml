@@ -66,8 +66,8 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="60dp"
-                    android:id="@+id/postsNumber"
-                    android:text="27"
+                    android:id="@+id/gamesPlayedNmbr"
+                    android:text="10"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="@color/lavender"
@@ -76,8 +76,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/posts"
-                    android:text="Stat1"
+                    android:id="@+id/gamesPlayed"
+                    android:text="Games Played"
                     android:textAlignment="center"
                     android:textColor="@color/lavender"
                     android:textSize="14sp"/>
@@ -94,7 +94,7 @@
                     android:layout_width="80dp"
                     android:layout_height="60dp"
                     android:id="@+id/followersNo"
-                    android:text="455"
+                    android:text="75"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="@color/lavender"
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/followers"
-                    android:text="Stat2"
+                    android:text="Wins %"
                     android:textAlignment="center"
                     android:textColor="@color/lavender"
                     android:textSize="14sp"/>
