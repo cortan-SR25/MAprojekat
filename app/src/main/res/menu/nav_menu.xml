@@ -18,9 +18,19 @@
             android:title="Profile"/>
 
         <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/nav_about"
+            android:id="@+id/nav_gamesStats"
+            android:icon="@drawable/nav_gamestats"
             android:title="Games Statistic"/>
+
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/nav_addfriends"
+            android:title="Your Friends"/>
+
+        <item
+            android:id="@+id/nav_addFriends"
+            android:icon="@drawable/nav_searchfriends"
+            android:title="Add Friends"/>
     </group>
     <item
         android:title="">
