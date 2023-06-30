@@ -54,6 +54,8 @@ public class GameThreeActivity extends AppCompatActivity {
 
     private TextView timerText;
     private TextView player1Points;
+    private TextView player2Points;
+
 
     private ArrayList<TextView> rows = new ArrayList<>();
     private ArrayList<TextView> symbols;
@@ -72,19 +74,34 @@ public class GameThreeActivity extends AppCompatActivity {
     private String opponentId;
 
     private ArrayList<String> colorsList;
+    private String priority;
+    private String p1PointsText;
+    private String p2PointsText;
+
+    private static int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_three);
 
-        timerText = findViewById(R.id.timer);
-        player1Points = findViewById(R.id.playerOne_points);
-
         id = PreferenceManager.getDefaultSharedPreferences(this).
                 getString("ID", null);
         opponentId = PreferenceManager.getDefaultSharedPreferences(this).
                 getString("OPPONENT_ID", null);
+
+        priority = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("PRIORITY", null);
+
+        p1PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("POINTS", null);
+
+        p2PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("OPPONENT_POINTS", null);
+
+        timerText = findViewById(R.id.timer);
+        player1Points = findViewById(R.id.playerOne_points);
+        player2Points = findViewById(R.id.playerTwo_points);
 
         correctCombo.put(1, heart);
         correctCombo.put(2, heart);
@@ -121,12 +138,14 @@ public class GameThreeActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         totalPoints = bundle.getInt("points");
 
-        player1Points.setText(String.valueOf(totalPoints) + " points");
+        player1Points.setText(p1PointsText + " points");
+        player2Points.setText(p2PointsText + " points");
 
-        //if (counter == 0 && priority){
+        if ((counter == 0 && priority.equals("1"))
+        || counter == 1 && priority.equals("2")){
         setListeners();
         setSymbolListeners();
-        //}
+        }
 
         startTimer(30000);
 
@@ -148,6 +167,7 @@ public class GameThreeActivity extends AppCompatActivity {
                             showCorrectCombination();
                             restartTimerEnd(5000);
                             HomeFragment.socket.off("sendPlayerSkocko");
+                            HomeFragment.socket.off("sendPlayerSkockoCorrect");
                             HomeFragment.socket.off("notifyOpponentSkocko");
                             finishGame();
                             //nextGame();
@@ -181,6 +201,7 @@ public class GameThreeActivity extends AppCompatActivity {
                             restartTimerEnd(5000);
                             HomeFragment.socket.off("sendPlayerSkocko");
                             HomeFragment.socket.off("notifyOpponentSkocko");
+                            HomeFragment.socket.off("sendPlayerSkockoCorrect");
                             finishGame();
                             //nextGame();
                         }
@@ -203,8 +224,6 @@ public class GameThreeActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //setListeners();
-                                //setSymbolListeners();
                                 restartTimer(10000);
                             }
                         });
@@ -223,8 +242,20 @@ public class GameThreeActivity extends AppCompatActivity {
                     }
                 } else if (numberOfTries > 0) {
                     if (obj.get("_opponentId").toString().equals(id)) {
+                        //setListeners();
+                        //setSymbolListeners();
                         showSocketData(obj);
                         changeLetter();
+
+                        if (numberOfTries == 1){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setListeners();
+                                    setSymbolListeners();
+                                }
+                            });
+                        }
                     }
                 }
             } catch (JSONException e) {
@@ -336,6 +367,7 @@ public class GameThreeActivity extends AppCompatActivity {
                         showCorrectCombination();
                         HomeFragment.socket.off("sendPlayerSkocko");
                         HomeFragment.socket.off("notifyOpponentSkocko");
+                        HomeFragment.socket.off("sendPlayerSkockoCorrect");
                         restartTimerEnd(5000);
                         finishGame();
                         //nextGame();
@@ -678,8 +710,15 @@ public class GameThreeActivity extends AppCompatActivity {
                 isTimerRunning = false;
                 HomeFragment.socket.off("sendPlayerSkocko");
                 HomeFragment.socket.off("notifyOpponentSkocko");
+                HomeFragment.socket.off("sendPlayerSkockoCorrect");
                 //finishGame();
-                nextGame();
+                if (counter != 0){
+                    nextGame();
+                } else {
+                    counter = 1;
+                    recreate();
+                    finish();
+                }
             }
         };
 
@@ -722,13 +761,7 @@ public class GameThreeActivity extends AppCompatActivity {
             correctComboStr = correctComboStr + entry.getValue() + ";";
         }
 
-        /*if (numberOfTries == 0){
-            String v = obj.get("combo").toString();
-        }*/
-
         try {
-            String myId = obj.get("_id").toString();
-            String opponentId = obj.get("_opponentId").toString();
             String combo;
             String colors;
 
@@ -751,7 +784,12 @@ public class GameThreeActivity extends AppCompatActivity {
             for (int j = 0; j < 4; j++) {
                 String comboElement = combo.split(";")[j];
                 System.out.println(comboElement);
-                int num = Integer.parseInt(comboElement);
+                int num;
+               //if (numberOfTries == -1 && counter != 0){
+                 //   num = stringSymbols.indexOf(comboElement);
+                //} else {
+                    num = Integer.parseInt(comboElement);
+                //}
                 int id = res.getIdentifier(currentLetter + (j + 1), "id", getPackageName());
                 TextView textView = findViewById(id);
 
@@ -778,22 +816,71 @@ public class GameThreeActivity extends AppCompatActivity {
     }
 
     private void finishGame() {
+        int p1Points = Integer.parseInt(p1PointsText);
+        int p2Points = Integer.parseInt(p2PointsText);
         if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true) {
-            Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText(String.valueOf(totalPoints + 20) + " points");
-            totalPoints = totalPoints + 20;
+            if ((counter == 0 && priority.equals("1")) ||
+                    counter == 1 && priority.equals("2")) {
+                Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
+                player1Points.setText(String.valueOf(p1Points + 20) + " points");
+                totalPoints = totalPoints + 20;
+                p1Points = p1Points + 20;
+            } else {
+                player2Points.setText(String.valueOf(p2Points + 20) + " points");
+                Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+                p2Points = p1Points + 20;
+            }
         } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true) {
-            Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText(String.valueOf(totalPoints + 15) + " points");
-            totalPoints = totalPoints + 15;
+            if ((counter == 0 && priority.equals("1")) ||
+                    counter == 1 && priority.equals("2")) {
+                Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
+                player1Points.setText(String.valueOf(p1Points + 15) + " points");
+                totalPoints = totalPoints + 15;
+                p1Points = p1Points + 15;
+            } else {
+                player2Points.setText(String.valueOf(p2Points + 20) + " points");
+                Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+                p2Points = p2Points + 20;
+            }
         } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true) {
-            Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText(String.valueOf(totalPoints + 10) + " points");
-            totalPoints = totalPoints + 10;
-        } else {
-            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
-            player1Points.setText("0 points");
+            if ((counter == 0 && priority.equals("1")) ||
+                    counter == 1 && priority.equals("2")) {
+                Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
+                player1Points.setText(String.valueOf(p1Points + 10) + " points");
+                totalPoints = totalPoints + 10;
+                p1Points = p1Points + 10;
+            } else {
+                player2Points.setText(String.valueOf(p2Points + 20) + " points");
+                Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+                p2Points = p2Points + 10;
+            }
+        } else if (numberOfTries == -1){
+            if ((counter == 0 && priority.equals("1")) ||
+            counter == 1 && priority.equals("2")){
+                if (isCorrect){
+                    Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+                    player2Points.setText(String.valueOf(p1Points + 10) + " points");
+                    p2Points = p2Points + 10;
+                }
+            } else {
+                if (isCorrect){
+                    Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
+                    player1Points.setText(String.valueOf(p2Points + 10) + " points");
+                    p1Points = p1Points + 10;
+                }
+            }
         }
+        else {
+            Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
+            player1Points.setText(p1PointsText + " points");
+            player2Points.setText(p2PointsText + " points");
+        }
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("POINTS", String.valueOf(p1Points)).apply();
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("OPPONENT_POINTS", String.valueOf(p2Points)).apply();
 
         for (int i = 0; i < symbols.size(); i++) {
             symbols.get(i).setEnabled(false);

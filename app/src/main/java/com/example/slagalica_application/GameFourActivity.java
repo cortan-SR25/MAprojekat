@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameFourActivity extends AppCompatActivity {
@@ -117,6 +118,9 @@ public class GameFourActivity extends AppCompatActivity {
 
         p2PointsText = PreferenceManager.getDefaultSharedPreferences(this).
                 getString("OPPONENT_POINTS", null);
+
+        player1Points.setText(p1PointsText + " points");
+        player2Points.setText(p2PointsText + " points");
 
         wordsToMatch = new ArrayList<>();
         wordsToBeMatchedWith = new ArrayList<>();
@@ -243,7 +247,7 @@ public class GameFourActivity extends AppCompatActivity {
 
         startTimer(30000);
 
-        /*DatabaseReference reference = FirebaseDatabase.getInstance().getReference("spojnice");
+        /* DatabaseReference reference = FirebaseDatabase.getInstance().getReference("spojnice");
         Query checkSpojnicaDatabase = reference.orderByChild("gameId").equalTo("1");
 
         checkSpojnicaDatabase.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -555,6 +559,7 @@ public class GameFourActivity extends AppCompatActivity {
                 } else {
                     counter = 1;
                     recreate();
+                    finish();
                 }
             }
         };

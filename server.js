@@ -112,12 +112,6 @@ io.on('connect', (socket) => {
 	});
 	
 	socket.on('sendPlayerSkocko', (playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries) => {
-		console.log(numOfTries);
-		if (isCorrect){
-			io.emit("showPlayerSkockoCorrect", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
-			return;
-		}
-		
 		if (numOfTries == -1){
 			io.emit("giveOpponentAChanceSkocko", new Skocko(playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries));
 		} else {

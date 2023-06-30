@@ -160,18 +160,18 @@ public class GameOneActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                int randomResult = ThreadLocalRandom.current().nextInt(1, 500);
+                int randomResult = new Random().nextInt(501) + 1;
 
                 int[] smallies = new int[]{10, 15, 20};
                 int[] biggies = new int[]{25, 50, 75, 100};
 
-                int num1 = ThreadLocalRandom.current().nextInt(1, 10);
-                int num2 = ThreadLocalRandom.current().nextInt(1, 10);
-                int num3 = ThreadLocalRandom.current().nextInt(1, 10);
-                int num4 = ThreadLocalRandom.current().nextInt(1, 10);
+                int num1 = new Random().nextInt(11) + 1;
+                int num2 = new Random().nextInt(11) + 1;
+                int num3 = new Random().nextInt(11) + 1;
+                int num4 = new Random().nextInt(11) + 1;
 
-                int smallie = smallies[ThreadLocalRandom.current().nextInt(0, 3)];
-                int biggie = biggies[ThreadLocalRandom.current().nextInt(0, 4)];
+                int smallie = smallies[new Random().nextInt(3)];
+                int biggie = biggies[new Random().nextInt(4)];
 
                 numbers.add(num1);
                 numbers.add(num2);
@@ -538,7 +538,7 @@ public class GameOneActivity extends AppCompatActivity {
                         totalPoints
                 );
 
-                Intent intent = new Intent(GameOneActivity.this, GameTwoActivity.class);
+                Intent intent = new Intent(GameOneActivity.this, GameThreeActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
