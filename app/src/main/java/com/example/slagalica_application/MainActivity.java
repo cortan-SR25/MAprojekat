@@ -89,11 +89,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_friends:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new YourFriendsFragment()).commit();
+                Intent intent3 = new Intent(MainActivity.this, YourFriendsActivity.class);
+
+                startActivity(intent3);
                 break;
 
             case R.id.nav_addFriends:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AddFriendsFragment()).commit();
+                Intent intent2 = new Intent(MainActivity.this, AddFriendsActivity.class);
+
+                startActivity(intent2);
                 break;
 
             case R.id.nav_logout:

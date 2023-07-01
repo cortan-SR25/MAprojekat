@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".YourFriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,5 +13,6 @@
         android:textSize="30sp"
         android:layout_centerInParent="true"
         android:textColor="@color/lavender"/>
+
 
 </RelativeLayout>

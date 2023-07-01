@@ -15,6 +15,18 @@
         android:theme="@style/Theme.SlagalicaApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FriendProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".YourFriendsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".AddFriendsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".SignupActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
