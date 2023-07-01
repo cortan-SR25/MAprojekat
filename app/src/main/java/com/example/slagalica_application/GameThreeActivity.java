@@ -184,6 +184,7 @@ public class GameThreeActivity extends AppCompatActivity {
         HomeFragment.socket.on("showPlayerSkockoCorrect", args -> {
 
             JSONObject obj = (JSONObject) args[0];
+            HomeFragment.socket.off("sendPlayerSkockoCorrect");
 
             try {
                 if (obj.get("_opponentId").toString().equals(id)) {
@@ -717,7 +718,7 @@ public class GameThreeActivity extends AppCompatActivity {
                 } else {
                     counter = 1;
                     recreate();
-                    finish();
+                    //finish();
                 }
             }
         };

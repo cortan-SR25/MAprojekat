@@ -76,6 +76,7 @@ public class GameFourActivity extends AppCompatActivity {
     private ArrayList<String> wordsToMatch;
     private ArrayList<String> wordsToBeMatchedWith;
     private ArrayList<String> matches;
+    private ArrayList<String> matched;
 
     private String currentMatch;
 
@@ -125,6 +126,7 @@ public class GameFourActivity extends AppCompatActivity {
         wordsToMatch = new ArrayList<>();
         wordsToBeMatchedWith = new ArrayList<>();
         matches = new ArrayList<>();
+        matched = new ArrayList<>();
         matchesToSend = new ArrayList<>();
         matchAB = "";
         player1Matched = 0;
@@ -343,6 +345,7 @@ public class GameFourActivity extends AppCompatActivity {
                         tv2.setBackground(getDrawable(R.drawable.player_two_border));
 
                         matches.remove(toMatch[i]);
+                        //this.matched.add(toMatch[i]);
 
                         aWords.remove(tv1);
                         bWords.remove(tv2);
@@ -415,6 +418,7 @@ public class GameFourActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        finishGame();
                         restartTimerEnd();
                         HomeFragment.socket.off("sendFinishSpojnice");
                     }
@@ -447,6 +451,7 @@ public class GameFourActivity extends AppCompatActivity {
                             bWords.get(finalI).setBackground(getDrawable(R.drawable.player_one_border));
                             bWords.get(finalI).setEnabled(false);
                             matches.remove(currentMatch);
+                            matched.add(currentMatch);
                             numOfTries = numOfTries + 1;
                             String matchA = "a" + numOfTries;
                             String matchB = "b" + (finalI + 1);
@@ -473,7 +478,7 @@ public class GameFourActivity extends AppCompatActivity {
                         } else {
                             bWords.get(finalI).setBackground(getDrawable(R.drawable.player_one_border));
                             bWords.get(finalI).setEnabled(false);
-                            wordsToMatch.remove(currentMatch);
+                            matched.add(currentMatch);
                             String matchA = "a" + (originalAWords.indexOf(aWords.get(numOfSecondTries)) + 1);
                             String matchB = "b" + (originalBWords.indexOf(bWords.get(finalI)) + 1);
                             matchAB = matchAB + matchA + ";" + matchB + "-";
@@ -484,6 +489,7 @@ public class GameFourActivity extends AppCompatActivity {
                                 }
                             } else {
                                 HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
+                                finishGame();
                                 for (int i = 0; i < originalAWords.size(); i++){
                                     originalAWords.get(i).setEnabled(false);
                                     originalBWords.get(i).setEnabled(false);
@@ -519,6 +525,7 @@ public class GameFourActivity extends AppCompatActivity {
                                     HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
                                     restartTimerEnd();
                                     HomeFragment.socket.off("sendFinishSpojnice");
+                                    finishGame();
                                     for (int i = 0; i < originalAWords.size(); i++){
                                         originalAWords.get(i).setEnabled(false);
                                         originalBWords.get(i).setEnabled(false);
@@ -559,7 +566,6 @@ public class GameFourActivity extends AppCompatActivity {
                 } else {
                     counter = 1;
                     recreate();
-                    finish();
                 }
             }
         };
@@ -584,6 +590,7 @@ public class GameFourActivity extends AppCompatActivity {
                 if ((counter == 0 && priority.equals("2")) ||
                         (counter == 1 && priority.equals("1"))) {
                     HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
+                    finishGame();
                     restartTimerEnd();
 
                     for (int i = 0; i < originalAWords.size(); i++){
@@ -624,6 +631,43 @@ public class GameFourActivity extends AppCompatActivity {
 
         countDownTimer.start();
         isTimerRunning = true;
+    }
+
+    private void finishGame(){
+
+        int p1Points = Integer.parseInt(p1PointsText);
+        int p2Points = Integer.parseInt(p2PointsText);
+
+        int p1GainedPoints = 0;
+        int p2GainedPoints = 0;
+
+        if ((counter == 0 && priority.equals("1")) ||
+                (counter != 0 && priority.equals("2"))){
+
+            p1GainedPoints = (matched.size() * 2);
+            p2GainedPoints = (wordsToMatch.size() * 2);
+
+            p1Points = p1Points + p1GainedPoints;
+            p2Points = p2Points + p2GainedPoints;
+        } else {
+
+            p1GainedPoints = (matched.size() * 2);
+            p2GainedPoints = (wordsToMatch.size() * 2);
+
+            p1Points = p1Points + p1GainedPoints;
+            p2Points = p2Points + p2GainedPoints;
+        }
+
+        Toast.makeText(this, p1GainedPoints + " points", Toast.LENGTH_SHORT).show();
+
+        player1Points.setText(p1Points + " points");
+        player2Points.setText(p2Points + " points");
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("POINTS", String.valueOf(p1Points)).apply();
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().
+                putString("OPPONENT_POINTS", String.valueOf(p2Points)).apply();
     }
 }
 

@@ -13,7 +13,7 @@ public class SocketHandler {
     public static void setSocket(){
 
         try {
-            socket = IO.socket("http://192.168.0.4:3000");
+            socket = IO.socket("http://192.168.100.56:3000");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -165,10 +165,10 @@ public class GameOneActivity extends AppCompatActivity {
                 int[] smallies = new int[]{10, 15, 20};
                 int[] biggies = new int[]{25, 50, 75, 100};
 
-                int num1 = new Random().nextInt(11) + 1;
-                int num2 = new Random().nextInt(11) + 1;
-                int num3 = new Random().nextInt(11) + 1;
-                int num4 = new Random().nextInt(11) + 1;
+                int num1 = new Random().nextInt(10) + 1;
+                int num2 = new Random().nextInt(10) + 1;
+                int num3 = new Random().nextInt(10) + 1;
+                int num4 = new Random().nextInt(10) + 1;
 
                 int smallie = smallies[new Random().nextInt(3)];
                 int biggie = biggies[new Random().nextInt(4)];

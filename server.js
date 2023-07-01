@@ -90,6 +90,14 @@ io.on('connect', (socket) => {
 		}
 	});
 	
+
+	socket.on('cancelGame', (player) => {
+		if (playersReady.includes(player)){
+			const index = playersReady.indexOf(player);
+			playersReady.splice(index, 1);
+		}
+	});
+	
 	socket.on('playerCalculatedNumber', (playerOneId, playerTwoId, number) => {
 	if (playersCalculated.filter(e => e._opponentId === playerOneId).length > 0){
 			const foundPlayers = playersCalculated.filter(e => e._opponentId === playerOneId);
