@@ -162,9 +162,7 @@ public class GameSixActivity extends AppCompatActivity {
 
         Confirm();
 
-        Bundle bundle = getIntent().getExtras();
-        
-        player1Points.setText(String.valueOf(points) + " points");
+        player1Points.setText("0 points");
 
         startTimer(startTime);
     }
