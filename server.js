@@ -61,6 +61,21 @@ class Skocko{
 	}
 }
 
+class SkockoCombo{
+	_opponentId;
+	s1;
+	s2;
+	s3;
+	s4;
+	constructor(opponentId, s1, s2, s3, s4){
+		this._opponentId = opponentId;
+		this.s1 = s1;
+		this.s2 = s2;
+		this.s3 = s3;
+		this.s4 = s4;
+	}
+}
+
 class Spojnica {
 	_opponentId;
 	matches;
@@ -112,6 +127,10 @@ io.on('connect', (socket) => {
 			return;
 		}
 		playersCalculated.add(new MojBroj(playerOneId, playerTwoId, number));
+	});
+	
+	socket.on('sendSkockoStartCombo', (id, s1, s2, s3, s4) => {
+		io.emit('receiveSkockoStartCombo', new SkockoCombo(id, s1, s2, s3, s4));
 	});
 	
 	socket.on('sendPlayerSkockoCorrect', (playerOneId, playerTwoId, combo, colors, isCorrect, numOfTries) => {

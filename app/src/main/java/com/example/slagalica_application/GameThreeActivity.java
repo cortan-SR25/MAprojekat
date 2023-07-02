@@ -25,6 +25,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class GameThreeActivity extends AppCompatActivity {
 
@@ -103,11 +104,6 @@ public class GameThreeActivity extends AppCompatActivity {
         player1Points = findViewById(R.id.playerOne_points);
         player2Points = findViewById(R.id.playerTwo_points);
 
-        correctCombo.put(1, heart);
-        correctCombo.put(2, heart);
-        correctCombo.put(3, circle);
-        correctCombo.put(4, star);
-
         mouseButton = findViewById(R.id.skocko);
         squareButton = findViewById(R.id.kvadrat);
         circleButton = findViewById(R.id.krug);
@@ -135,6 +131,21 @@ public class GameThreeActivity extends AppCompatActivity {
         stringSymbols.add(triangle);
         stringSymbols.add(star);
 
+        if ((counter == 0 && priority.equals("1")) ||
+                (counter != 0 && priority.equals("2"))){
+            int s1 = new Random().nextInt(6);
+            int s2 = new Random().nextInt(6);
+            int s3 = new Random().nextInt(6);
+            int s4 = new Random().nextInt(6);
+
+            correctCombo.put(1, stringSymbols.get(s1));
+            correctCombo.put(2, stringSymbols.get(s2));
+            correctCombo.put(3, stringSymbols.get(s3));
+            correctCombo.put(4, stringSymbols.get(s4));
+
+            HomeFragment.socket.send("sendSkockoStartCombo", opponentId, s1, s2, s3, s4);
+        }
+
         Bundle bundle = getIntent().getExtras();
         totalPoints = bundle.getInt("points");
 
@@ -147,7 +158,29 @@ public class GameThreeActivity extends AppCompatActivity {
         setSymbolListeners();
         }
 
-        startTimer(30000);
+        startTimer(60000);
+
+        HomeFragment.socket.on("receiveSkockoStartCombo", args -> {
+
+            JSONObject obj = (JSONObject) args[0];
+
+            try {
+                if (obj.get("_opponentId").toString().equals(id)) {
+
+                    int s1 = Integer.parseInt(obj.get("s1").toString());
+                    int s2 = Integer.parseInt(obj.get("s2").toString());
+                    int s3 = Integer.parseInt(obj.get("s3").toString());
+                    int s4 = Integer.parseInt(obj.get("s4").toString());
+
+                    correctCombo.put(1, stringSymbols.get(s1));
+                    correctCombo.put(2, stringSymbols.get(s2));
+                    correctCombo.put(3, stringSymbols.get(s3));
+                    correctCombo.put(4, stringSymbols.get(s4));
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         HomeFragment.socket.on("giveOpponentAChanceSkocko", args -> {
 
@@ -818,7 +851,7 @@ public class GameThreeActivity extends AppCompatActivity {
     private void finishGame() {
         int p1Points = Integer.parseInt(p1PointsText);
         int p2Points = Integer.parseInt(p2PointsText);
-        if ((numberOfTries == 5 || numberOfTries == 4) && isCorrect == true) {
+        if ((numberOfTries == 5 || numberOfTries == 4)) {
             if ((counter == 0 && priority.equals("1")) ||
                     counter == 1 && priority.equals("2")) {
                 Toast.makeText(this, "20 POINTS", Toast.LENGTH_SHORT).show();
@@ -830,7 +863,7 @@ public class GameThreeActivity extends AppCompatActivity {
                 Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
                 p2Points = p1Points + 20;
             }
-        } else if ((numberOfTries == 3 || numberOfTries == 2) && isCorrect == true) {
+        } else if ((numberOfTries == 3 || numberOfTries == 2)) {
             if ((counter == 0 && priority.equals("1")) ||
                     counter == 1 && priority.equals("2")) {
                 Toast.makeText(this, "15 POINTS", Toast.LENGTH_SHORT).show();
@@ -840,9 +873,9 @@ public class GameThreeActivity extends AppCompatActivity {
             } else {
                 player2Points.setText(String.valueOf(p2Points + 20) + " points");
                 Toast.makeText(this, "0 POINTS", Toast.LENGTH_SHORT).show();
-                p2Points = p2Points + 20;
+                p2Points = p2Points + 15;
             }
-        } else if ((numberOfTries == 1 || numberOfTries == 0) && isCorrect == true) {
+        } else if ((numberOfTries == 1 || numberOfTries == 0)) {
             if ((counter == 0 && priority.equals("1")) ||
                     counter == 1 && priority.equals("2")) {
                 Toast.makeText(this, "10 POINTS", Toast.LENGTH_SHORT).show();
