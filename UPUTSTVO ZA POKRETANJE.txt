@@ -2,6 +2,8 @@ UPUTSTVO ZA POKRETANJE
 
 Socket server se pokrece u direktorijumu projekta sa "node server.js" komandom
 
+(u local.properties fajlu napisati IP svog racunara)
+
 Moguce je registrovati novog korisnika, a postojeci su:
 username: user
 password user
