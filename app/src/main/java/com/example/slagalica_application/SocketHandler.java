@@ -13,12 +13,11 @@ public class SocketHandler {
     public static void setSocket(){
 
         try {
-            socket = IO.socket("http://192.168.100.56:3000");
+            socket = IO.socket("http://" + BuildConfig.IP_ADDR + ":3000");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        //IP racunara koji hostuje node server koji sluzi za komunikaciju dva igraca
-        //ne zakucavati ovaj IP vec ga smestiti u local properties i pozivati ga preko promenljive
+
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {

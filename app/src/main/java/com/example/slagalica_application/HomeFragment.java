@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,12 +33,9 @@ import io.socket.client.Socket;
 public class HomeFragment extends Fragment {
 
     View inflatedView;
-    CardView gameOneCard;
-    CardView gameTwoCard;
-    CardView gameThreeCard;
-    CardView gameFourCard;
-    CardView gameFiveCard;
-    CardView gameSixCard;
+    CardView startGameCard;
+
+    Button cancelButton;
 
     static Socket socket;
 
@@ -49,7 +47,9 @@ public class HomeFragment extends Fragment {
         String id = PreferenceManager.getDefaultSharedPreferences(getContext()).
                 getString("ID", null);
 
-        gameOneCard = inflatedView.findViewById(R.id.gameOne);
+        startGameCard = inflatedView.findViewById(R.id.startGame);
+        cancelButton = inflatedView.findViewById(R.id.cancelBtn);
+        cancelButton.setVisibility(View.INVISIBLE);
 
         SocketHandler.setSocket();
 
@@ -87,67 +87,28 @@ public class HomeFragment extends Fragment {
                        throw new RuntimeException(e);
                    }
                }
-               /*dva igraca su spremna i ova dva ID smestiti u bazu da bi tokom igre korisnici
-                 odnosno aplikacija znala koja dva igraca igraju */
                Intent intent = new Intent(getActivity(), GameOneActivity.class);
                startActivity(intent);
            }
         });
 
-        gameOneCard.setOnClickListener(new View.OnClickListener() {
+        startGameCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 socket.emit("playerReady", id);
-//                Intent intent = new Intent(getActivity(), GameOneActivity.class);
-//                startActivity(intent);
+                startGameCard.setEnabled(false);
+                cancelButton.setVisibility(View.VISIBLE);
             }
         });
 
-        gameTwoCard = inflatedView.findViewById(R.id.gameTwo);
-        gameTwoCard.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameTwoActivity.class);
-                startActivity(intent);
+                socket.emit("cancelGame", id);
+                startGameCard.setEnabled(true);
+                cancelButton.setVisibility(View.INVISIBLE);
             }
         });
-
-        gameThreeCard = inflatedView.findViewById(R.id.gameThree);
-        gameThreeCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameThreeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        gameFourCard = inflatedView.findViewById(R.id.gameFour);
-        gameFourCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameFourActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        gameFiveCard = inflatedView.findViewById(R.id.gameFive);
-        gameFiveCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameFiveActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        gameSixCard = inflatedView.findViewById(R.id.gameSix);
-        gameSixCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameSixActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         return inflatedView;
 

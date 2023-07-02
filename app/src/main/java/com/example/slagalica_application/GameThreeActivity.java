@@ -490,7 +490,6 @@ public class GameThreeActivity extends AppCompatActivity {
 
         String combo = "";
         String colors = "";
-        Toast.makeText(this, currentLetter, Toast.LENGTH_SHORT).show();
 
         Resources res = getResources();
 

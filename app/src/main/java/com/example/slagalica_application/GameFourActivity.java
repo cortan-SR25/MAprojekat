@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -421,6 +422,7 @@ public class GameFourActivity extends AppCompatActivity {
                         finishGame();
                         restartTimerEnd();
                         HomeFragment.socket.off("sendFinishSpojnice");
+                        HomeFragment.socket.off("receiveFinishSpojnice");
                     }
                 });
 
@@ -496,6 +498,7 @@ public class GameFourActivity extends AppCompatActivity {
                                 }
                                 restartTimerEnd();
                                 HomeFragment.socket.off("sendFinishSpojnice");
+                                HomeFragment.socket.off("receiveFinishSpojnice");
                             }
                         }
 
@@ -525,6 +528,7 @@ public class GameFourActivity extends AppCompatActivity {
                                     HomeFragment.socket.emit("sendFinishSpojnice", opponentId, matchAB);
                                     restartTimerEnd();
                                     HomeFragment.socket.off("sendFinishSpojnice");
+                                    HomeFragment.socket.off("receiveFinishSpojnice");
                                     finishGame();
                                     for (int i = 0; i < originalAWords.size(); i++){
                                         originalAWords.get(i).setEnabled(false);
@@ -562,6 +566,8 @@ public class GameFourActivity extends AppCompatActivity {
                 isTimerRunning = false;
 
                 if(counter != 0){
+                    Intent intent = new Intent(GameFourActivity.this, GameFiveActivity.class);
+                    startActivity(intent);
                     finish();
                 } else {
                     counter = 1;
@@ -625,7 +631,6 @@ public class GameFourActivity extends AppCompatActivity {
                     }
                 }
                 //evalResults();
-                //nextGame();
             }
         };
 

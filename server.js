@@ -70,7 +70,7 @@ class Spojnica {
 	}
 }
 
-var playersWaiting = new List([]);
+var playersWaiting = [];
 var playersCalculated = [];
 
 io.on('connect', (socket) => {
@@ -85,16 +85,16 @@ io.on('connect', (socket) => {
 		playersWaiting.add(player);
 		console.log(player);
 		if (playersWaiting.length == 2){
-			io.emit('startGame', playersWaiting.toJSON());
-			playersWaiting = new List([]);
+			io.emit('startGame', playersWaiting);
+			playersWaiting = [];
 		}
 	});
 	
 
 	socket.on('cancelGame', (player) => {
-		if (playersReady.includes(player)){
-			const index = playersReady.indexOf(player);
-			playersReady.splice(index, 1);
+		if (playersWaiting.includes(player)){
+			const index = playersWaiting.indexOf(player);
+			playersWaiting.splice(index, 1);
 		}
 	});
 	
