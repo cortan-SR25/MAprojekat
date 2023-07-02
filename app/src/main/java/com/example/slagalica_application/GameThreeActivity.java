@@ -146,9 +146,6 @@ public class GameThreeActivity extends AppCompatActivity {
             HomeFragment.socket.send("sendSkockoStartCombo", opponentId, s1, s2, s3, s4);
         }
 
-        Bundle bundle = getIntent().getExtras();
-        totalPoints = bundle.getInt("points");
-
         player1Points.setText(p1PointsText + " points");
         player2Points.setText(p2PointsText + " points");
 
