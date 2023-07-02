@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,8 +24,14 @@ public class GamesEndActivity extends AppCompatActivity {
         player1Points = findViewById(R.id.endGamePoints1);
         player2Points = findViewById(R.id.endGamePoints2);
 
-//        player1Points.setText(String.valueOf(points) + " points");
-//        player2Points.setText(String.valueOf(points) + " points");
+        String p1PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("POINTS", null);
+
+        String p2PointsText = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("OPPONENT_POINTS", null);
+
+        player1Points.setText(p1PointsText + " points");
+        player2Points.setText(p2PointsText + " points");
 
 
         backToHomeButton.setOnClickListener(new View.OnClickListener() {
