@@ -1,0 +1,12 @@
+UPUTSTVO ZA POKRETANJE
+
+Socket server se pokrece u direktorijumu projekta sa "node server.js" komandom
+
+Moguce je registrovati novog korisnika, a postojeci su:
+username: user
+password user
+
+username: user2
+password: user2
+
+Kada se uloguju tu su podaci o igracu i prijateljima sa leve strane a pokrece se igra na Start game (moraju oba igraca pokrenuti igru da bi pocela)
