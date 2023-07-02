@@ -16,7 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".GamesEndActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".FriendProfileActivity"
             android:exported="false"
