@@ -379,15 +379,6 @@ public class GameFourActivity extends AppCompatActivity {
             opponentId = args[0].toString();
             matched = args[1].toString();
 
-            /*JSONObject obj = (JSONObject) args[0];
-
-            try {
-                opponentId = obj.get("_opponentId").toString();
-                matched = (JSONArray) obj.get("matches");
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }*/
-
             if (opponentId.equals(id)) {
                 Resources res = getResources();
 
@@ -566,7 +557,7 @@ public class GameFourActivity extends AppCompatActivity {
                 isTimerRunning = false;
 
                 if(counter != 0){
-                    Intent intent = new Intent(GameFourActivity.this, GameFiveActivity.class);
+                    Intent intent = new Intent(GameFourActivity.this, GameSixActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
