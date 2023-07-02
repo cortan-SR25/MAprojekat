@@ -1,5 +1,6 @@
 package com.example.slagalica_application;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -266,6 +267,9 @@ public class GameSixActivity extends AppCompatActivity {
                         finalResult.setFocusable(false);
 
                         countDownTimer.cancel();
+
+                        Intent intent = new Intent(GameSixActivity.this, GamesEndActivity.class);
+                        startActivity(intent);
                     }
                     points += 20;
                     player1Points.setText(points + " points");

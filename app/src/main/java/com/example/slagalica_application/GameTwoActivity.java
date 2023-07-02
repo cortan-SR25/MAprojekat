@@ -313,7 +313,7 @@ public class GameTwoActivity extends AppCompatActivity {
                         totalPoints
                 );
 
-                Intent intent = new Intent(GameTwoActivity.this, GameThreeActivity.class);
+                Intent intent = new Intent(GameTwoActivity.this, GameFiveActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 finish();

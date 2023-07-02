@@ -101,7 +101,7 @@ public class GameFiveActivity extends AppCompatActivity {
         listOfQuestions.add((new KoZnaZna("Najveća Euro novčanica je...", "500 eura", "1000 eura", "2000 eura", "5000 eura", "500 eura")));
 
 
-        Collections.shuffle(listOfQuestions);
+//        Collections.shuffle(listOfQuestions);
         koZnaZna = listOfQuestions.get(index);
 
         setAllData();
@@ -212,10 +212,10 @@ public class GameFiveActivity extends AppCompatActivity {
     }
 
     private void NextGame(){
-//        Intent intent = new Intent(GameFiveActivity.this, GameSixActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(GameFiveActivity.this, GameThreeActivity.class);
+        startActivity(intent);
 
-        Toast.makeText(GameFiveActivity.this, "You had " + correctCount + " Correcnt points!" + wrongCount + "Wrong ones", Toast.LENGTH_LONG).show();
+//        Toast.makeText(GameFiveActivity.this, "You had " + correctCount + " Correcnt points!" + wrongCount + "Wrong ones", Toast.LENGTH_LONG).show();
     }
 
     private void enableButton(){

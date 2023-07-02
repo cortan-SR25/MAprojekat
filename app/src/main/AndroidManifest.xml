@@ -15,9 +15,12 @@
         android:theme="@style/Theme.SlagalicaApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".GamesEndActivity"
+            android:exported="false" />
+        <activity
             android:name=".FriendProfileActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".YourFriendsActivity"
             android:exported="false"
