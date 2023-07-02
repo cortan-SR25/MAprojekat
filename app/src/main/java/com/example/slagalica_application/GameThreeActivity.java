@@ -131,23 +131,20 @@ public class GameThreeActivity extends AppCompatActivity {
         stringSymbols.add(triangle);
         stringSymbols.add(star);
 
-        if ((counter == 0 && priority.equals("1")) ||
-                (counter != 0 && priority.equals("2"))){
-            int s1 = new Random().nextInt(6);
-            int s2 = new Random().nextInt(6);
-            int s3 = new Random().nextInt(6);
-            int s4 = new Random().nextInt(6);
+        if (counter == 0){
 
-            correctCombo.put(1, stringSymbols.get(s1));
-            correctCombo.put(2, stringSymbols.get(s2));
-            correctCombo.put(3, stringSymbols.get(s3));
-            correctCombo.put(4, stringSymbols.get(s4));
+            correctCombo.put(1, stringSymbols.get(3));
+            correctCombo.put(2, stringSymbols.get(3));
+            correctCombo.put(3, stringSymbols.get(2));
+            correctCombo.put(4, stringSymbols.get(5));
 
-            HomeFragment.socket.send("sendSkockoStartCombo", opponentId, s1, s2, s3, s4);
+        } else {
+
+            correctCombo.put(1, stringSymbols.get(4));
+            correctCombo.put(2, stringSymbols.get(1));
+            correctCombo.put(3, stringSymbols.get(4));
+            correctCombo.put(4, stringSymbols.get(1));
         }
-
-        Bundle bundle = getIntent().getExtras();
-        totalPoints = bundle.getInt("points");
 
         player1Points.setText(p1PointsText + " points");
         player2Points.setText(p2PointsText + " points");
@@ -159,28 +156,6 @@ public class GameThreeActivity extends AppCompatActivity {
         }
 
         startTimer(60000);
-
-        HomeFragment.socket.on("receiveSkockoStartCombo", args -> {
-
-            JSONObject obj = (JSONObject) args[0];
-
-            try {
-                if (obj.get("_opponentId").toString().equals(id)) {
-
-                    int s1 = Integer.parseInt(obj.get("s1").toString());
-                    int s2 = Integer.parseInt(obj.get("s2").toString());
-                    int s3 = Integer.parseInt(obj.get("s3").toString());
-                    int s4 = Integer.parseInt(obj.get("s4").toString());
-
-                    correctCombo.put(1, stringSymbols.get(s1));
-                    correctCombo.put(2, stringSymbols.get(s2));
-                    correctCombo.put(3, stringSymbols.get(s3));
-                    correctCombo.put(4, stringSymbols.get(s4));
-                }
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        });
 
         HomeFragment.socket.on("giveOpponentAChanceSkocko", args -> {
 
